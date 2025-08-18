@@ -153,6 +153,25 @@
                     </div>
                 </div>
             </section>
+            
+            <section id="land-use" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[#0077B6] text-center mb-8">چشم‌انداز توسعه و کاربری اراضی</h2>
+                <p class="text-center text-gray-700 max-w-3xl mx-auto mb-10">طرح جامع دوغارون، تخصیص هوشمندانه اراضی را برای حداکثر بهره‌وری و توسعه پایدار تضمین می‌کند. این نقشه، پتانسیل‌های صنعتی و زیرساختی منطقه را به تصویر می‌کشد.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#0077B6] text-center mb-4">تخصیص کلان اراضی (کل: ۸۶۸۷ هکتار)</h3>
+                        <div class="chart-container h-80 max-h-80">
+                            <canvas id="landUseChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#0077B6] text-center mb-4">سهم صنایع پیشنهادی (بخش صنعتی: ۲۹۲۶ هکتار)</h3>
+                        <div class="chart-container h-96 max-h-96">
+                            <canvas id="industryShareChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <section id="incentives" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
                 <h2 class="text-3xl font-bold text-[#0077B6] text-center mb-8">پناهگاه امن کسب‌وکار</h2>
@@ -209,6 +228,10 @@
             text: '#023047'
         };
 
+        const extendedPalette = [
+            '#0077B6', '#00B4D8', '#48CAE4', '#90E0EF', '#ADE8F4', '#03045E', '#023E8A'
+        ];
+
         const wrapLabel = (label, maxLength = 16) => {
             if (label.length <= maxLength) {
                 return label;
@@ -250,7 +273,9 @@
                             family: 'Vazirmatn',
                             size: 12
                         },
-                        color: brilliantBlues.text
+                        color: brilliantBlues.text,
+                        boxWidth: 15,
+                        padding: 15
                     }
                 },
                 tooltip: {
@@ -313,6 +338,80 @@
                 plugins: { ...defaultChartOptions.plugins, legend: { display: false } }
             }
         });
+
+        const landUseData = {
+            labels: ['صنایع', 'خدمات و اداری', 'فضای سبز', 'راه‌ها و معابر', 'تأسیسات', 'فرودگاه', 'شهرک صنعتی'],
+            datasets: [{
+                label: 'درصد از کل مساحت',
+                data: [34, 24, 18, 12, 7, 5, 1],
+                backgroundColor: extendedPalette,
+                borderColor: '#ffffff',
+                borderWidth: 2
+            }]
+        };
+
+        new Chart(document.getElementById('landUseChart'), {
+            type: 'doughnut',
+            data: landUseData,
+            options: {
+                ...defaultChartOptions,
+                plugins: {
+                    ...defaultChartOptions.plugins,
+                    tooltip: {
+                        ...defaultChartOptions.plugins.tooltip,
+                        callbacks: {
+                            ...defaultChartOptions.plugins.tooltip.callbacks,
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const industryShareData = {
+            labels: [
+                'فلزی، الکترونیک و ماشین سازی',
+                'نساجی و پوشاک',
+                'شیمیایی',
+                'سلولوزی',
+                'دارویی و بهداشتی',
+                'غذایی',
+                'کشاورزی',
+                'کانی غیرفلزی',
+                'چرم'
+            ].map(l => wrapLabel(l, 25)),
+            datasets: [{
+                label: 'درصد از کل بخش صنعتی',
+                data: [28.2, 16.7, 12.1, 10.2, 8.9, 7.5, 7.4, 6.1, 2.9],
+                backgroundColor: brilliantBlues.medium,
+                borderColor: brilliantBlues.dark,
+                borderWidth: 1
+            }]
+        };
+
+        new Chart(document.getElementById('industryShareChart'), {
+            type: 'bar',
+            data: industryShareData,
+            options: {
+                ...defaultChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: { ...defaultChartOptions.scales.x, title: { display: true, text: 'درصد', font: { family: 'Vazirmatn' } } },
+                    y: { ...defaultChartOptions.scales.y, ticks: { ...defaultChartOptions.scales.y.ticks, font: { size: 10 } } }
+                },
+                plugins: { ...defaultChartOptions.plugins, legend: { display: false } }
+            }
+        });
+
 
         document.getElementById('downloadPdfBtn').addEventListener('click', function() {
             const btn = this;
