@@ -54,11 +54,12 @@
         #progress-bar { height: 10px; width: 0%; background-color: #3b82f6; border-radius: 9999px; transition: width 0.4s ease-in-out; }
         .modal { transition: opacity 0.3s ease; }
         .modal > div { transition: transform 0.3s ease; }
-        .impact-table-grid { display: grid; grid-template-columns: 2fr repeat(5, 1fr); gap: 0.5rem; align-items: center; text-align: center; }
-        .impact-table-grid .header { font-weight: bold; padding: 0.5rem; background-color: #f3f4f6; }
-        .impact-table-grid .label-cell { text-align: right; padding: 0.5rem; font-weight: 500; }
-        .impact-table-grid .radio-cell { display: flex; justify-content: center; align-items: center; }
         .validation-error { color: #ef4444; font-size: 0.875rem; margin-top: 0.5rem; min-height: 1.25rem; }
+        ::placeholder {
+            color: #d1d5db; /* gray-300 */
+            opacity: 1;
+            font-size: 0.875rem; /* text-sm */
+        }
     </style>
 </head>
 <body class="text-gray-800">
@@ -67,10 +68,13 @@
         <div id="form-wrapper">
              <!-- صفحه خوشامدگویی -->
             <div id="welcome-page" class="bg-white rounded-2xl shadow-2xl p-8 text-center active">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAbFBMVEX9/f0AAAD8/PwEBAT///4ICAgEBARPT08GBgb7+/sCAgIDAwP6+vr09PTs7Ozw8PDZ2dnf39/Ly8vNzc2tra2cnJyHh4eUlJTR0dG8vLzExMSrq6umpqajo6N6enqBgYGQkJAZGRkaGhqIiIjdGWVdAAAC+0lEQVR4nO3d61LbQBSF4WwhIBiU3sYKbEEFpdL//2sdLpM0FCEHOSc766z1pwtJzDo7uywAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADYh1C4hBum2l5dxf497V7c1G7tpmr/MAtfKwyzxDX1mG3j1K24tY2b+sMcz3i4tQ2/k7pQ2+rWNm7qR1hM9N852zZurvppnN9xacPsVv17mN9z+c2wqfq3MJ/nX8/ZtPhV/XcYp/M/52zO/FT9S1hM8p/mbL/8VP3rGEzyt2Zsv/xU/UcYp/Mf5mza/FT9sxhM8h/m/D+mbL/8VP1rGEzwn+bsP6ZsP6b+NYzT+d+w/5i2/Zf6fxmZ5G/M2b6mbT+m/jMKT/IvZv2+pu0/pv4/hNN5u2+p+0/pv4NhNN6w/4i2/Zj6n2MwyT+bsP2Y+p8iTuf/zbD9mPpPYSzJv5mx/Zj6TxGcTv+bYfsx9Z/BJJJ/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWf4Nhe3mHZP+L7D9N/B4Npe3CHbf+I7T9O/f8YTPJvpv2v2P6nGBbzyz/y9/+Z6n+O4XRe/v/4Nl39PzCMxtvM/sO09B+m/h+G0/m4P1/T9B+m/h+E0/m4/9/S9D8IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgsvwFS1W+n9jKpg0AAAAASUVORK5CYII=" alt="لوگوی سازمان منطقه آزاد دوغارون" class="mx-auto mb-8 h-28 w-auto">
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">به پرسشنامه خوش آمدید</h1>
+                <div class="flex justify-around items-center mb-8">
+                    <img src="https://uploadkon.ir/uploads/2b5714_25Screenshot-2025-09-14-134322.png" alt="لوگوی سازمان منطقه آزاد دوغارون" class="h-24 w-auto">
+                    <img src="https://uploadkon.ir/uploads/6ef414_25Picture1.png" alt="لوگوی مشاور" class="h-24 w-auto">
+                </div>
+                <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">به پرسشنامه سنجش دیدگاه ذینفعان طرح جامع منطقه آزاد دوغارون خوش آمدید</h1>
                 <p class="text-gray-600 mt-3 text-lg mb-8">
-                    از اینکه وقت خود را برای مشارکت در "سنجش دیدگاه ذینفعان طرح جامع منطقه آزاد دوغارون" اختصاص می‌دهید، سپاسگزاریم. نظرات شما برای ما بسیار ارزشمند است.
+                    از اینکه وقت خود را برای مشارکت در این طرح اختصاص می‌دهید، سپاسگزاریم. نظرات شما برای ما بسیار ارزشمند است.
                 </p>
                 <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 text-right space-y-4 mb-8">
                      <p><strong>هدف:</strong> درک دیدگاه‌ها و انتظارات شما از طرح.</p>
@@ -80,6 +84,15 @@
                 <button type="button" id="startBtn" class="w-full max-w-xs mx-auto bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition transform hover:scale-105 duration-300 text-lg shadow-lg">
                     شروع پرسشنامه
                 </button>
+                 <div class="mt-8 text-sm text-gray-500">
+                    تهیه شده در
+                    <span class="relative inline-block font-semibold text-gray-600 group cursor-pointer">
+                        شرکت مهندسی شهریگ
+                        <span class="absolute bottom-full left-1/2 z-10 w-max max-w-xs px-3 py-2 mb-2 text-xs leading-tight text-white transition-opacity duration-300 -translate-x-1/2 bg-gray-900 rounded-lg opacity-0 pointer-events-none group-hover:opacity-100">
+                            حمیدرضا ترابی<br>hr.torabii@gmail.com
+                        </span>
+                    </span>
+                </div>
             </div>
             
             <!-- کانتینر اصلی فرم -->
@@ -93,10 +106,6 @@
                         <p id="progress-text" class="text-center text-sm text-gray-500 mt-2"></p>
                     </div>
                     
-                    <!-- 
-                        فرم ویرایش شده برای ارسال به Formspree.
-                        آدرس 'action' با آدرس دریافتی شما جایگزین شده است.
-                    -->
                     <form id="stakeholderForm" action="https://formspree.io/f/mvgbnprg" method="POST">
                         <!-- محتوای فرم به صورت پویا اینجا قرار می‌گیرد -->
                     </form>
@@ -109,9 +118,22 @@
             </div>
             
             <div id="final-page" class="hidden text-center p-10 bg-white rounded-2xl shadow-2xl">
+                 <div class="flex justify-around items-center mb-8">
+                    <img src="https://uploadkon.ir/uploads/2b5714_25Screenshot-2025-09-14-134322.png" alt="لوگوی سازمان منطقه آزاد دوغارون" class="h-24 w-auto">
+                    <img src="https://uploadkon.ir/uploads/6ef414_25Picture1.png" alt="لوگوی مشاور" class="h-24 w-auto">
+                </div>
                 <h2 class="text-2xl font-bold mb-4">از وقتی که گذاشتید سپاسگزاریم!</h2>
                 <p class="text-gray-600 mb-8">برای ثبت نهایی پاسخ‌های خود، لطفا دکمه زیر را فشار دهید.</p>
                 <button type="submit" form="stakeholderForm" class="w-full max-w-xs mx-auto bg-blue-600 text-white font-bold py-4 px-10 rounded-full hover:bg-blue-700 transition transform hover:scale-105 duration-300 text-lg shadow-lg">ارسال نهایی پاسخ‌ها</button>
+                 <div class="mt-8 text-sm text-gray-500">
+                    تهیه شده در
+                    <span class="relative inline-block font-semibold text-gray-600 group cursor-pointer">
+                        شرکت مهندسی شهریگ
+                        <span class="absolute bottom-full left-1/2 z-10 w-max max-w-xs px-3 py-2 mb-2 text-xs leading-tight text-white transition-opacity duration-300 -translate-x-1/2 bg-gray-900 rounded-lg opacity-0 pointer-events-none group-hover:opacity-100">
+                            حمیدرضا ترابی<br>hr.torabii@gmail.com
+                        </span>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
@@ -128,10 +150,6 @@
         </div>
     </div>
 
-    <!-- 
-        کدهای JavaScript بازنویسی شده.
-        وابستگی به Firebase به طور کامل حذف شده است.
-    -->
     <script>
         const questionsData = [
             {
@@ -146,65 +164,74 @@
                 questions: [
                     { id: 'q1_role', number: 1, text: 'کدام یک از گزینه‌های زیر، نقش یا سازمان شما را به بهترین شکل توصیف می‌کند؟', type: 'radio', options: ['سازمان/نهاد دولتی', 'کسب‌وکار محلی / بخش خصوصی', 'سازمان غیردولتی (NGO) / گروه اجتماعی', 'ساکن محلی', 'نخبه دانشگاهی / کارشناس / مشاور', 'نماینده رسانه'], other: true },
                     { id: 'q2_org_name', number: 2, text: 'لطفاً نام سازمان/اداره خود را (در صورت اطلاق) ذکر کنید.', type: 'text' },
-                    { id: 'q3_duration', number: 3, text: 'چه مدت در این منطقه سکونت یا فعالیت داشته‌اید؟', type: 'radio', options: ['کمتر از ۱ سال', '۱ تا ۵ سال', '۶ تا ۱۰ سال', 'بیش از ۱۰ سال'] },
-                    { id: 'q4_expertise', number: 4, text: 'لطفاً حوزه اصلی فعالیت یا تخصص خود را به طور خلاصه بیان کنید.', type: 'textarea' }
+                    { id: 'q3_duration', number: 3, text: 'چه مدت در این منطقه سکونت یا فعالیت داشته‌اید؟', type: 'radio', options: ['کمتر از ۱ سال', '۱ تا ۵ سال', '۶ تا ۱۰ سال', 'بیش از ۱۰ سال'] }
                 ]
             },
             {
-                legend: "بخش ب: آگاهی، نگرش و برجستگی طرح",
-                questions: [
-                    { id: 'q5_familiarity', number: 5, text: 'تا چه حد با اهداف و جزئیات طرح آشنا هستید؟', type: 'scale', labels: ['اصلاً آشنا نیستم', 'بسیار آشنا هستم'] },
-                    { id: 'q6_attitude', number: 6, text: 'بر اساس اطلاعات فعلی خود، نگرش اولیه شما نسبت به این طرح چیست؟', type: 'scale', labels: ['بسیار منفی', 'بسیار مثبت'] },
-                    { id: 'q7_urgency', number: 7, text: 'به نظر شما، حل مسائلی که این طرح به آنها می‌پردازد، تا چه حد فوریت دارد؟', type: 'scale', labels: ['اصلاً فوری نیست', 'بسیار فوری است'] },
-                    { id: 'q8_legitimacy', number: 8, text: 'تا چه اندازه احساس می‌کنید که شما (یا سازمانتان) به طور مشروع و قانونی در نتایج این طرح ذی‌حق و ذی‌نفع هستید؟', type: 'scale', labels: ['هیچ حق مشروعی ندارم', 'حق مشروع بسیار قوی دارم'] }
-                ]
-            },
-            {
-                legend: "بخش ج: تحلیل منافع، علایق و اثرات بالقوه",
-                questions: [
-                    { id: 'q9_impact', number: 9, text: 'لطفاً تأثیر بالقوه این طرح را بر هر یک از حوزه‌های زیر ارزیابی کنید.', type: 'table', headers: ['بسیار منفی', 'منفی', 'بی‌تأثیر', 'مثبت', 'بسیار مثبت'], rows: [
-                        { id: 'q9_impact_economic', label: 'اقتصادی' }, { id: 'q9_impact_environmental', label: 'زیست‌محیطی' }, { id: 'q9_impact_social', label: 'اجتماعی' },
-                        { id: 'q9_impact_safety', label: 'ایمنی و امنیت' }, { id: 'q9_impact_infrastructure', label: 'زیرساخت' }, { id: 'q9_impact_property', label: 'ارزش املاک' }, { id: 'q9_impact_heritage', label: 'میراث فرهنگی' }
-                    ]},
-                    { id: 'q10_advantage', number: 10, text: 'مهم‌ترین مزیت یا فرصت بالقوه این طرح چیست؟', type: 'textarea' },
-                    { id: 'q11_disadvantage', number: 11, text: 'مهم‌ترین عیب، ریسک یا تهدید بالقوه این طرح چیست؟', type: 'textarea' }
-                ]
-            },
-            {
-                legend: "بخش د: سنجش نفوذ و قدرت",
-                questions: [
-                     { id: 'q12_involvement', number: 12, text: 'آیا نقش یا سازمان شما به طور رسمی در فرآیندهای برنامه‌ریزی یا تصویب دخیل است؟', type: 'radio', options: ['بله', 'خیر', 'نمی‌دانم'] },
-                     { id: 'q13_interaction', number: 13, text: 'نقش شما به چه میزانی با تصمیم‌گیرندگان کلیدی تعامل دارد؟', type: 'scale', labels: ['هرگز', 'بسیار زیاد'] },
-                     { id: 'q14_control', number: 14, text: 'سازمان شما تا چه حد بر منابع حیاتی برای موفقیت طرح کنترل دارد؟', type: 'scale', labels: ['هیچ کنترلی', 'کنترل قابل توجه'] },
-                     { id: 'q15_influencers', number: 15, text: 'کدام گروه‌ها بیشترین نفوذ را در نتیجه نهایی طرح دارند؟', type: 'textarea' }
-                ]
-            },
-            {
-                legend: "بخش ه: انتظارات و مشارکت",
-                questions: [
-                    { id: 'q16_understanding', number: 16, text: 'مهم‌ترین چیزی که تیم پروژه باید از دیدگاه شما درک کند، چیست؟', type: 'textarea' },
-                    { id: 'q17_suggestions', number: 17, text: 'چه پیشنهادات مشخصی برای بهبود طرح دارید؟', type: 'textarea' },
-                    { id: 'q18_contact_pref', number: 18, text: 'ترجیح می‌دهید از چه طریقی از پیشرفت طرح مطلع شوید؟', type: 'checkbox', options: ['ایمیل', 'جلسات عمومی', 'وب‌سایت', 'شبکه‌های اجتماعی', 'گزارش‌های رسمی'], other: true },
-                    { id: 'q19_participation_level', number: 19, text: 'تمایل به چه سطحی از مشارکت در ادامه فرآیند دارید؟', type: 'radio', options: ['دریافت اطلاعات', 'ارائه بازخورد', 'عضویت در کارگروه', 'مشارکت در تصمیم‌گیری', 'عدم تمایل'] },
-                    { id: 'q20_followup', number: 20, text: 'آیا تمایل به شرکت در مصاحبه تکمیلی دارید؟', type: 'radio', options: ['بله', 'خیر'] }
-                ]
-            },
-            {
-                 legend: "بخش و: اطلاعات جمعیت‌شناختی",
+                 legend: "بخش ب: اطلاعات جمعیت‌شناختی",
                  questions: [
-                    { id: 'q21_age', number: 21, text: 'محدوده سنی خود را مشخص کنید.', type: 'radio', options: ['زیر ۲۵ سال', '۲۵-۳۴', '۳۵-۴۴', '۴۵-۵۴', '۵۵-۶۴', '۶۵+'] },
-                    { id: 'q22_gender', number: 22, text: 'جنسیت:', type: 'radio', options: ['زن', 'مرد', 'عدم ذکر'] },
-                    { id: 'q23_education', number: 23, text: 'سطح تحصیلات شما چیست؟', type: 'radio', options: ['زیر دیپلم', 'دیپلم', 'کاردانی', 'کارشناسی', 'ارشد', 'دکتری+'] }
+                    { id: 'q21_age', number: 4, text: 'محدوده سنی خود را مشخص کنید.', type: 'radio', options: ['زیر ۲۵ سال', '۲۵-۳۴', '۳۵-۴۴', '۴۵-۵۴', '۵۵-۶۴', '۶۵+'] },
+                    { id: 'q22_gender', number: 5, text: 'جنسیت:', type: 'radio', options: ['زن', 'مرد', 'تمایلی به ذکر ندارم'] },
+                    { id: 'q23_education', number: 6, text: 'سطح تحصیلات شما چیست؟', type: 'radio', options: ['زیر دیپلم', 'دیپلم', 'کاردانی', 'کارشناسی', 'کارشناسی ارشد', 'دکتری و بالاتر'] }
                  ]
+            },
+            {
+                legend: "بخش ج: آگاهی، نگرش و برجستگی طرح",
+                questions: [
+                    { id: 'q5_familiarity', number: 7, text: 'تا چه حد با اهداف و جزئیات طرح آشنا هستید؟', type: 'scale', labels: ['اصلاً آشنا نیستم', 'بسیار آشنا هستم'] },
+                    { id: 'q6_attitude', number: 8, text: 'بر اساس اطلاعات فعلی خود، نگرش اولیه شما نسبت به این طرح چیست؟', type: 'scale', labels: ['بسیار منفی', 'بسیار مثبت'] },
+                    { id: 'q7_urgency', number: 9, text: 'به نظر شما، حل مسائلی که این طرح به آنها می‌پردازد، تا چه حد فوریت دارد؟', type: 'scale', labels: ['اصلاً فوری نیست', 'بسیار فوری است'] },
+                    { id: 'q8_legitimacy', number: 10, text: 'تا چه اندازه احساس می‌کنید که شما (یا سازمانتان) به طور مشروع و قانونی در نتایج این طرح ذی‌حق و ذی‌نفع هستید؟', type: 'scale', labels: ['هیچ حق مشروعی ندارم', 'حق مشروع بسیار قوی دارم'] }
+                ]
+            },
+            {
+                legend: "بخش د: تحلیل منافع، علایق و اثرات بالقوه",
+                questions: [
+                    { 
+                        id: 'q9_impact', number: 11, text: 'لطفاً تأثیر بالقوه این طرح را بر هر یک از حوزه‌های زیر ارزیابی کنید.', 
+                        type: 'table',
+                        guide: '(۱ = تأثیر بسیار منفی  |  ۳ = بی‌تأثیر  |  ۵ = تأثیر بسیار مثبت)',
+                        rows: [
+                            { id: 'q9_impact_economic', label: 'اقتصادی', description: '(اشتغال، درآمد کسب‌وکارها)' },
+                            { id: 'q9_impact_environmental', label: 'زیست‌محیطی', description: '(فضای سبز، آلودگی)' },
+                            { id: 'q9_impact_social', label: 'اجتماعی', description: '(انسجام جامعه، دسترسی به خدمات)' },
+                            { id: 'q9_impact_safety', label: 'ایمنی و امنیت', description: '(ایمنی ترافیک، احساس امنیت)' },
+                            { id: 'q9_impact_infrastructure', label: 'زیرساخت و حمل‌ونقل', description: '(وضعیت راه‌ها، حمل‌ونقل عمومی)' },
+                            { id: 'q9_impact_property', label: 'ارزش املاک و زمین', description: '' },
+                            { id: 'q9_impact_heritage', label: 'میراث فرهنگی و تاریخی منطقه', description: '' }
+                        ]
+                    },
+                    { id: 'q10_advantage', number: 12, text: 'مهم‌ترین مزیت یا فرصت بالقوه این طرح چیست؟', type: 'textarea' },
+                    { id: 'q11_disadvantage', number: 13, text: 'مهم‌ترین عیب، ریسک یا تهدید بالقوه این طرح چیست؟', type: 'textarea' }
+                ]
+            },
+            {
+                legend: "بخش ه: سنجش نفوذ و قدرت",
+                questions: [
+                     { id: 'q12_involvement', number: 14, text: 'آیا نقش یا سازمان شما به طور رسمی در فرآیندهای برنامه‌ریزی یا تصویب دخیل است؟', type: 'radio', options: ['بله', 'خیر', 'نمی‌دانم'] },
+                     { id: 'q13_interaction', number: 15, text: 'نقش شما به چه میزانی با تصمیم‌گیرندگان کلیدی تعامل دارد؟', type: 'scale', labels: ['هرگز', 'بسیار زیاد'] },
+                     { id: 'q14_control', number: 16, text: 'سازمان شما تا چه حد بر منابع حیاتی برای موفقیت طرح کنترل دارد؟', type: 'scale', labels: ['هیچ کنترلی', 'کنترل قابل توجه'] },
+                     { id: 'q15_influencers', number: 17, text: 'کدام گروه‌ها بیشترین نفوذ را در نتیجه نهایی طرح دارند؟', type: 'textarea' }
+                ]
+            },
+            {
+                legend: "بخش و: انتظارات و مشارکت",
+                questions: [
+                    { id: 'q16_understanding', number: 18, text: 'مهم‌ترین چیزی که تیم پروژه باید از دیدگاه شما درک کند، چیست؟', type: 'textarea' },
+                    { id: 'q17_suggestions', number: 19, text: 'چه پیشنهادات مشخصی برای بهبود طرح دارید؟', type: 'textarea' },
+                    { id: 'q18_contact_pref', number: 20, text: 'ترجیح می‌دهید از چه طریقی از پیشرفت طرح مطلع شوید؟', type: 'checkbox', options: ['ایمیل', 'جلسات عمومی', 'وب‌سایت', 'شبکه‌های اجتماعی', 'گزارش‌های رسمی'], other: true },
+                    { id: 'q19_participation_level', number: 21, text: 'تمایل به چه سطحی از مشارکت در ادامه فرآیند دارید؟', type: 'radio', options: ['دریافت اطلاعات', 'ارائه بازخورد', 'عضویت در کارگروه', 'مشارکت در تصمیم‌گیری', 'عدم تمایل'] },
+                    { id: 'q20_followup', number: 22, text: 'آیا تمایل به شرکت در مصاحبه تکمیلی دارید؟', type: 'radio', options: ['بله', 'خیر'] }
+                ]
             },
             {
                 legend: "بخش ز: چشم‌انداز آینده",
                 questions: [
-                    { id: 's4_q24_priority', number: 24, text: 'بالاترین اولویت برای تبدیل شدن دوغارون به هاب لجستیکی چیست؟', type: 'radio', options: ['تکمیل راه‌آهن خواف-هرات', 'مدیریت واحد مرزی', 'هوشمندسازی گمرک', 'جذب سرمایه‌گذاری خارجی', 'توسعه روابط دیپلماتیک'] },
-                    { id: 's4_q25_focus', number: 25, text: 'منطقه آزاد باید بر کدام حوزه‌ها (علاوه بر ترانزیت) تمرکز کند؟ (حداکثر ۳ گزینه)', type: 'checkbox', options: ['صنایع تبدیلی', 'تولید صادرات‌محور', 'انرژی‌های تجدیدپذیر', 'خدمات مالی و بیمه', 'گردشگری', 'انبارداری استراتژیک'], limit: 3 },
-                    { id: 's4_q26_participation', number: 26, text: 'پیشنهاد شما برای جلب مشارکت مؤثر جامعه محلی و بخش خصوصی چیست؟', type: 'textarea' },
-                    { id: 's4_q27_suggestion_board', number: 27, text: 'اگر یک پیشنهاد کلیدی برای هیئت مدیره منطقه آزاد داشتید، چه بود؟', type: 'textarea' },
-                    { id: 's4_q28_other', number: 28, text: 'هرگونه نظر یا پیشنهاد دیگری را مرقوم فرمایید.', type: 'textarea' }
+                    { id: 's4_q24_priority', number: 23, text: 'بالاترین اولویت برای تبدیل شدن دوغارون به هاب لجستیکی چیست؟', type: 'radio', options: ['تکمیل راه‌آهن خواف-هرات', 'مدیریت واحد مرزی', 'هوشمندسازی گمرک', 'جذب سرمایه‌گذاری خارجی', 'توسعه روابط دیپلماتیک'] },
+                    { id: 's4_q25_focus', number: 24, text: 'منطقه آزاد باید بر کدام حوزه‌ها (علاوه بر ترانزیت) تمرکز کند؟ (حداکثر ۳ گزینه)', type: 'checkbox', options: ['صنایع تبدیلی', 'تولید صادرات‌محور', 'انرژی‌های تجدیدپذیر', 'خدمات مالی و بیمه', 'گردشگری', 'انبارداری استراتژیک'], limit: 3 },
+                    { id: 's4_q26_participation', number: 25, text: 'پیشنهاد شما برای جلب مشارکت مؤثر جامعه محلی و بخش خصوصی چیست؟', type: 'textarea' },
+                    { id: 's4_q27_suggestion_board', number: 26, text: 'اگر یک پیشنهاد کلیدی برای هیئت مدیره منطقه آزاد داشتید، چه بود؟', type: 'textarea' },
+                    { id: 's4_q28_other', number: 27, text: 'هرگونه نظر یا پیشنهاد دیگری را مرقوم فرمایید.', type: 'textarea' }
                 ]
             }
         ];
@@ -212,7 +239,7 @@
         document.addEventListener('DOMContentLoaded', main);
 
         function main() {
-            const appState = { currentPageIndex: -1, pages: [], isSubmitting: false }; // Start at -1 for welcome page
+            const appState = { currentPageIndex: -1, pages: [], isSubmitting: false };
             const uiElements = {
                 form: document.getElementById('stakeholderForm'),
                 formContainer: document.getElementById('form-container'),
@@ -249,10 +276,18 @@
                 const container = document.createElement('div');
                 switch (q.type) {
                     case 'introduction':
-                        container.innerHTML = `<div class="bg-blue-50 border-r-4 border-blue-500 p-5 rounded-lg text-justify question-card"><h2 class="font-bold text-xl text-blue-800 mb-2">مقدمه</h2><p class="text-gray-700">با سلام و احترام، این پرسشنامه به منظور شناسایی و درک دیدگاه‌ها، منافع و انتظارات کلیه افراد، گروه‌ها و سازمان‌هایی که تحت تأثیر طرح جامع منطقه آزاد دوغارون قرار می‌گیرند یا بر آن تأثیرگذار هستند، طراحی شده است. مشارکت شما در این نظرسنجی به ما کمک می‌کند تا برنامه‌ریزی دقیق‌تر و فراگیرتری داشته باشیم. اطلاعات شما به صورت محرمانه محفوظ خواهد ماند.</p></div>`;
+                        container.innerHTML = `
+                            <div class="flex justify-around items-center mb-8">
+                                <img src="https://uploadkon.ir/uploads/2b5714_25Screenshot-2025-09-14-134322.png" alt="لوگوی سازمان منطقه آزاد دوغارون" class="h-20 w-auto">
+                                <img src="https://uploadkon.ir/uploads/6ef414_25Picture1.png" alt="لوگوی مشاور" class="h-20 w-auto">
+                            </div>
+                            <div class="bg-blue-50 border-r-4 border-blue-500 p-5 rounded-lg text-justify question-card">
+                                <h2 class="font-bold text-xl text-blue-800 mb-2">مقدمه</h2>
+                                <p class="text-gray-700">با سلام و احترام، این پرسشنامه به منظور شناسایی و درک دیدگاه‌ها، منافع و انتظارات کلیه افراد، گروه‌ها و سازمان‌هایی که تحت تأثیر طرح جامع منطقه آزاد دوغارون قرار می‌گیرند یا بر آن تأثیرگذار هستند، طراحی شده است. مشارکت شما در این نظرسنجی به ما کمک می‌کند تا برنامه‌ریزی دقیق‌تر و فراگیرتری داشته باشیم. اطلاعات شما به صورت محرمانه محفوظ خواهد ماند.</p>
+                            </div>`;
                         break;
-                    case 'text': container.innerHTML = `<input type="text" id="${q.id}" name="${q.id}" class="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 bg-white/50">`; break;
-                    case 'textarea': container.innerHTML = `<textarea id="${q.id}" name="${q.id}" rows="4" class="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 bg-white/50"></textarea>`; break;
+                    case 'text': container.innerHTML = `<input type="text" id="${q.id}" name="${q.id}" class="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 bg-white/50" placeholder="در اینجا بنویسید...">`; break;
+                    case 'textarea': container.innerHTML = `<textarea id="${q.id}" name="${q.id}" rows="4" class="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 bg-white/50" placeholder="در اینجا بنویسید..."></textarea>`; break;
                     case 'radio':
                     case 'checkbox':
                         container.className = 'grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4';
@@ -264,8 +299,30 @@
                         break;
                     case 'scale': container.innerHTML = `<div class="flex justify-between items-center text-sm text-gray-500 px-1 mt-4"><span>${q.labels[0]}</span><span>${q.labels[1]}</span></div><div class="grid grid-cols-5 gap-2 p-2 bg-gray-100/50 rounded-xl mt-2">${[1,2,3,4,5].map(v => `<label for="${q.id}_${v}" class="choice-card p-3"><input type="radio" name="${q.id}" id="${q.id}_${v}" value="${v}" class="visually-hidden"> <span class="text-lg font-bold">${v}</span></label>`).join('')}</div>`; break;
                     case 'table':
-                         container.innerHTML = `<div class="impact-table-grid border border-gray-200 rounded-lg p-3 mt-4 overflow-x-auto bg-white/50"><div class="header label-cell"></div>${q.headers.map((h, i) => `<div class="header text-xs" title="${h}">${i + 1}</div>`).join('')}${q.rows.map(row => `<div class="label-cell border-t">${row.label}</div>${[1,2,3,4,5].map(v => `<div class="radio-cell border-t"><input type="radio" name="${row.id}" value="${v}" class="form-radio"></div>`).join('')}`).join('')}</div>`;
-                         break;
+                        container.innerHTML = `<div class="text-center text-sm text-gray-600 mb-4 p-2 bg-gray-100 rounded-md">${q.guide}</div>`;
+                        const itemsContainer = document.createElement('div');
+                        itemsContainer.className = 'space-y-4';
+                        q.rows.forEach(row => {
+                            const descriptionHTML = row.description ? `<p class="text-sm text-gray-500 mt-1">${row.description}</p>` : '';
+                            const itemHTML = `
+                                <div class="p-4 border border-gray-200 rounded-xl bg-white/70">
+                                    <div class="mb-3 text-right">
+                                        <p class="font-semibold text-gray-800">${row.label}</p>
+                                        ${descriptionHTML}
+                                    </div>
+                                    <div class="grid grid-cols-5 gap-2">
+                                        ${[1,2,3,4,5].map(v => `
+                                            <label for="${row.id}_${v}" class="choice-card p-3">
+                                                <input type="radio" name="${row.id}" id="${row.id}_${v}" value="${v}" class="visually-hidden">
+                                                <span class="text-lg font-bold">${v}</span>
+                                            </label>
+                                        `).join('')}
+                                    </div>
+                                </div>`;
+                            itemsContainer.innerHTML += itemHTML;
+                        });
+                        container.appendChild(itemsContainer);
+                        break;
                 }
                 wrapper.appendChild(container);
                 if (q.type !== 'introduction') {
@@ -292,7 +349,7 @@
 
             const validateCurrentPage = () => {
                 document.querySelectorAll('.validation-error').forEach(el => el.textContent = '');
-                if (appState.currentPageIndex < 0) return true; // Welcome page
+                if (appState.currentPageIndex < 0) return true;
                 let isValid = true;
                 const currentSection = questionsData[appState.currentPageIndex];
                 if (!currentSection || currentSection.isIntroduction) return true;
@@ -303,7 +360,7 @@
                     switch (q.type) {
                         case 'radio': case 'scale': if (!document.querySelector(`input[name="${q.name || q.id}"]:checked`)) questionIsValid = false; break;
                         case 'checkbox': if (document.querySelectorAll(`input[name="${q.name || q.id}"]:checked`).length === 0) questionIsValid = false; break;
-                        case 'textarea': const textarea = document.getElementById(q.id); if (textarea && textarea.value.trim().length < 10) { if(errorEl) errorEl.textContent = 'لطفاً حداقل ۱۰ کاراکتر وارد کنید.'; questionIsValid = false; } break;
+                        case 'textarea': const textarea = document.getElementById(q.id); if (textarea && textarea.value.trim().length > 0 && textarea.value.trim().length < 10) { if(errorEl) errorEl.textContent = 'لطفاً حداقل ۱۰ کاراکتر وارد کنید.'; questionIsValid = false; } break;
                         case 'table': q.rows.forEach(row => { if (!document.querySelector(`input[name="${row.id}"]:checked`)) questionIsValid = false; }); break;
                     }
                     if (!questionIsValid) { isValid = false; if (['radio', 'checkbox', 'scale', 'table'].includes(q.type) && errorEl) { errorEl.textContent = 'پاسخ به این سوال الزامی است.'; } }
@@ -325,16 +382,17 @@
                     
                     const progressPercentage = appState.currentPageIndex > 0 ? ((appState.currentPageIndex) / (totalPages - 1)) * 100 : 0;
                     uiElements.progressBar.style.width = `${progressPercentage}%`;
-                    uiElements.progressText.textContent = `صفحه ${appState.currentPageIndex} از ${totalPages - 1}`;
+                    uiElements.progressText.textContent = `صفحه ${appState.currentPageIndex + 1} از ${totalPages}`;
                 }
 
-                uiElements.prevBtn.style.visibility = appState.currentPageIndex > 0 ? 'visible' : 'hidden';
+                uiElements.prevBtn.style.visibility = appState.currentPageIndex >= 0 ? 'visible' : 'hidden';
+                if(appState.currentPageIndex === 0) uiElements.prevBtn.style.visibility = 'hidden';
                 uiElements.nextBtn.textContent = appState.currentPageIndex === totalPages - 1 ? 'پایان و مشاهده فرم' : 'بعدی';
             };
             
             const setupEventListeners = () => {
                 uiElements.startBtn.addEventListener('click', () => {
-                    appState.currentPageIndex = 0; // Move to introduction page
+                    appState.currentPageIndex = 0;
                     updateUI();
                 });
 
@@ -356,7 +414,6 @@
                 const form = e.target;
                 const data = new FormData(form);
                 
-                // Combine checkbox values
                 const checkboxNames = [...new Set([...form.querySelectorAll('input[type="checkbox"]')].map(cb => cb.name))];
                 checkboxNames.forEach(name => {
                     const values = data.getAll(name);
@@ -396,7 +453,6 @@
                 }
             };
 
-            // --- Start the application ---
             buildForm();
             setupEventListeners();
             setupChoiceCards();
@@ -405,3 +461,4 @@
     </script>
 </body>
 </html>
+
