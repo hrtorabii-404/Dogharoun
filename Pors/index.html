@@ -27,61 +27,37 @@
             opacity: 1;
             transform: translateY(0);
         }
-        
-        /* استایل‌های سفارشی برای کارت‌های سوالات و گزینه‌ها */
         .question-card {
             background-color: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1rem; /* rounded-2xl */
-            padding: 1.5rem; /* p-6 */
-            margin-bottom: 2rem; /* mb-8 */
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
         }
-        
         .choice-card {
-            display: block;
-            padding: 1rem;
-            border: 2px solid #e5e7eb; /* gray-200 */
-            border-radius: 0.75rem; /* rounded-xl */
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            background-color: white;
-            text-align: center;
+            display: block; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem;
+            cursor: pointer; transition: all 0.2s ease-in-out; background-color: white; text-align: center;
         }
         .choice-card:hover {
-            border-color: #93c5fd; /* blue-300 */
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-color: #93c5fd; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         .choice-card.selected {
-            border-color: #2563eb; /* blue-600 */
-            background-color: #eff6ff; /* blue-50 */
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* ring-blue-500 */
+            border-color: #2563eb; background-color: #eff6ff; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
         }
         .visually-hidden {
-            position: absolute;
-            width: 1px; height: 1px;
-            padding: 0; margin: -1px;
-            overflow: hidden; clip: rect(0, 0, 0, 0);
-            white-space: nowrap; border-width: 0;
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
         }
-
-        /* نوار پیشرفت */
         #progress-container { width: 100%; background-color: #e5e7eb; border-radius: 9999px; overflow: hidden; }
         #progress-bar { height: 10px; width: 0%; background-color: #3b82f6; border-radius: 9999px; transition: width 0.4s ease-in-out; }
-        
-        /* استایل مودال */
         .modal { transition: opacity 0.3s ease; }
         .modal > div { transition: transform 0.3s ease; }
-        
-        /* استایل جدول */
         .impact-table-grid { display: grid; grid-template-columns: 2fr repeat(5, 1fr); gap: 0.5rem; align-items: center; text-align: center; }
         .impact-table-grid .header { font-weight: bold; padding: 0.5rem; background-color: #f3f4f6; }
         .impact-table-grid .label-cell { text-align: right; padding: 0.5rem; font-weight: 500; }
         .impact-table-grid .radio-cell { display: flex; justify-content: center; align-items: center; }
-        
-        /* استایل پیام خطا */
         .validation-error { color: #ef4444; font-size: 0.875rem; margin-top: 0.5rem; min-height: 1.25rem; }
     </style>
 </head>
@@ -91,7 +67,7 @@
         <div id="form-wrapper">
              <!-- صفحه خوشامدگویی -->
             <div id="welcome-page" class="bg-white rounded-2xl shadow-2xl p-8 text-center active">
-                <img src="https://uploadkon.ir/uploads/2b5714_25Screenshot-2025-09-14-134322.png" alt="لوگوی سازمان منطقه آزاد دوغارون" class="mx-auto mb-8 h-28 w-auto">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAbFBMVEX9/f0AAAD8/PwEBAT///4ICAgEBARPT08GBgb7+/sCAgIDAwP6+vr09PTs7Ozw8PDZ2dnf39/Ly8vNzc2tra2cnJyHh4eUlJTR0dG8vLzExMSrq6umpqajo6N6enqBgYGQkJAZGRkaGhqIiIjdGWVdAAAC+0lEQVR4nO3d61LbQBSF4WwhIBiU3sYKbEEFpdL//2sdLpM0FCEHOSc766z1pwtJzDo7uywAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADYh1C4hBum2l5dxf497V7c1G7tpmr/MAtfKwyzxDX1mG3j1K24tY2b+sMcz3i4tQ2/k7pQ2+rWNm7qR1hM9N852zZurvppnN9xacPsVv17mN9z+c2wqfq3MJ/nX8/ZtPhV/XcYp/M/52zO/FT9S1hM8p/mbL/8VP3rGEzyt2Zsv/xU/UcYp/Mf5mza/FT9sxhM8h/m/D+mbL/8VP1rGEzwn+bsP6ZsP6b+NYzT+d+w/5i2/Zf6fxmZ5G/M2b6mbT+m/jMKT/IvZv2+pu0/pv4/hNN5u2+p+0/pv4NhNN6w/4i2/Zj6n2MwyT+bsP2Y+p8iTuf/zbD9mPpPYSzJv5mx/Zj6TxGcTv+bYfsx9Z/BJJJ/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWfwSSy/zNj+zH1n8Ekkv8zY/sx9Z/BJJL/M2P7MfWf4Nhe3mHZP+L7D9N/B4Npe3CHbf+I7T9O/f8YTPJvpv2v2P6nGBbzyz/y9/+Z6n+O4XRe/v/4Nl39PzCMxtvM/sO09B+m/h+G0/m4P1/T9B+m/h+E0/m4/9/S9D8IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgsvwFS1W+n9jKpg0AAAAASUVORK5CYII=" alt="لوگوی سازمان منطقه آزاد دوغارون" class="mx-auto mb-8 h-28 w-auto">
                 <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">به پرسشنامه خوش آمدید</h1>
                 <p class="text-gray-600 mt-3 text-lg mb-8">
                     از اینکه وقت خود را برای مشارکت در "سنجش دیدگاه ذینفعان طرح جامع منطقه آزاد دوغارون" اختصاص می‌دهید، سپاسگزاریم. نظرات شما برای ما بسیار ارزشمند است.
@@ -117,18 +93,17 @@
                         <p id="progress-text" class="text-center text-sm text-gray-500 mt-2"></p>
                     </div>
                     
-                    <form id="stakeholderForm" novalidate>
+                    <!-- 
+                        فرم ویرایش شده برای ارسال به Formspree.
+                        آدرس 'action' با آدرس دریافتی شما جایگزین شده است.
+                    -->
+                    <form id="stakeholderForm" action="https://formspree.io/f/mvgbnprg" method="POST">
                         <!-- محتوای فرم به صورت پویا اینجا قرار می‌گیرد -->
                     </form>
                     
                     <div id="navigation-controls" class="mt-8 flex justify-between items-center">
                         <button type="button" id="prevBtn" class="bg-gray-200 text-gray-700 font-bold py-2 px-6 rounded-lg hover:bg-gray-300">قبلی</button>
                         <button type="button" id="nextBtn" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700">بعدی</button>
-                    </div>
-                    
-                    <div class="text-center mt-10 border-t pt-4">
-                        <button type="button" id="adminBtn" class="text-xs text-gray-400 hover:text-blue-600">دسترسی مدیر</button>
-                        <button type="button" id="exportBtn" class="hidden mt-2 bg-green-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-green-700">دریافت خروجی (CSV)</button>
                     </div>
                 </div>
             </div>
@@ -153,21 +128,11 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyA4uzrW8zAOagw0S_xmDGb_SSLZfn8afc8",
-            authDomain: "dogharoun-a9764.firebaseapp.com",
-            projectId: "dogharoun-a9764",
-            storageBucket: "dogharoun-a9764.appspot.com",
-            messagingSenderId: "873490986773",
-            appId: "1:873490986773:web:16871b83bf4c18d4db5b1c"
-        };
-        
+    <!-- 
+        کدهای JavaScript بازنویسی شده.
+        وابستگی به Firebase به طور کامل حذف شده است.
+    -->
+    <script>
         const questionsData = [
             {
                 legend: "مقدمه",
@@ -247,44 +212,19 @@
         document.addEventListener('DOMContentLoaded', main);
 
         function main() {
-            const appState = { db: null, auth: null, currentPageIndex: -1, pages: [], isSubmitting: false }; // Start at -1 for welcome page
+            const appState = { currentPageIndex: -1, pages: [], isSubmitting: false }; // Start at -1 for welcome page
             const uiElements = {
                 form: document.getElementById('stakeholderForm'),
                 formContainer: document.getElementById('form-container'),
-                formWrapper: document.getElementById('form-wrapper'),
                 welcomePage: document.getElementById('welcome-page'),
                 startBtn: document.getElementById('startBtn'),
                 prevBtn: document.getElementById('prevBtn'),
                 nextBtn: document.getElementById('nextBtn'),
-                adminBtn: document.getElementById('adminBtn'),
-                exportBtn: document.getElementById('exportBtn'),
                 finalPage: document.getElementById('final-page'),
                 progressText: document.getElementById('progress-text'),
                 progressBar: document.getElementById('progress-bar'),
                 successModal: document.getElementById('successModal'),
                 restartBtn: document.getElementById('restartBtn')
-            };
-            
-            const showConnectionError = (message) => {
-                uiElements.formWrapper.innerHTML = `<div class="bg-white rounded-2xl shadow-2xl text-center p-10"><h1 class="text-2xl font-bold text-red-600">${message.title}</h1><p class="text-gray-700 mt-4">${message.body}</p></div>`;
-            };
-            
-            const initializeFirebase = async () => {
-                try {
-                    if (!firebaseConfig.apiKey || firebaseConfig.apiKey.startsWith("YOUR_")) {
-                        showConnectionError({ title: "خطا در پیکربندی", body: "اطلاعات اتصال به پایگاه داده (Firebase) به درستی در فایل وارد نشده است." });
-                        return false;
-                    }
-                    const app = initializeApp(firebaseConfig);
-                    appState.db = getFirestore(app);
-                    appState.auth = getAuth(app);
-                    await signInAnonymously(appState.auth);
-                    return true;
-                } catch (error) {
-                    console.error("Firebase Initialization Failed:", error);
-                    showConnectionError({ title: "خطا در اتصال به سرور", body: "متاسفانه امکان بارگذاری پرسشنامه وجود ندارد. لطفا اتصال اینترنت خود را بررسی کرده و صفحه را مجدداً بارگذاری نمایید." });
-                    return false;
-                }
             };
 
             const buildForm = () => {
@@ -400,18 +340,68 @@
 
                 uiElements.nextBtn.addEventListener('click', () => { if (validateCurrentPage()) { if (appState.currentPageIndex < appState.pages.length) { appState.currentPageIndex++; updateUI(); } } });
                 uiElements.prevBtn.addEventListener('click', () => { if (appState.currentPageIndex > 0) { appState.currentPageIndex--; updateUI(); } });
-                uiElements.adminBtn.addEventListener('click', () => { const code = prompt('کد مدیر:'); if (code === '212') { uiElements.exportBtn.classList.remove('hidden'); alert('دسترسی مدیر فعال شد.'); } else { alert('کد اشتباه است.'); } });
-                uiElements.exportBtn.addEventListener('click', handleExport);
                 uiElements.form.addEventListener('submit', handleSubmit);
                 uiElements.restartBtn.addEventListener('click', () => { uiElements.successModal.classList.add('opacity-0', 'pointer-events-none'); setTimeout(() => location.reload(), 300); });
             };
 
-            const handleSubmit = async (e) => { e.preventDefault(); if (appState.isSubmitting) return; appState.isSubmitting = true; const btn = e.submitter; btn.disabled = true; btn.textContent = 'در حال ارسال...'; const data = new FormData(uiElements.form); const sub = {}; for (const [key, val] of data.entries()) { if (document.querySelector(`[name="${key}"][type="checkbox"]`)) { if (!sub[key]) sub[key] = []; sub[key].push(val); } else { sub[key] = val; } } Object.keys(sub).forEach(key => { if (Array.isArray(sub[key])) sub[key] = sub[key].join(' | '); }); try { await addDoc(collection(appState.db, "submissions"), sub); uiElements.successModal.classList.remove('opacity-0', 'pointer-events-none'); uiElements.successModal.querySelector('div').classList.add('scale-100'); } catch (err) { console.error("Error: ", err); alert("خطا در ثبت اطلاعات."); } finally { appState.isSubmitting = false; btn.disabled = false; btn.textContent = 'ارسال نهایی پاسخ‌ها'; } };
-            const handleExport = async () => { uiElements.exportBtn.disabled = true; uiElements.exportBtn.textContent = 'در حال آماده‌سازی...'; try { const snap = await getDocs(collection(appState.db, "submissions")); const subs = snap.docs.map(doc => doc.data()); if (subs.length === 0) { alert('پاسخی برای خروجی گرفتن ثبت نشده.'); return; } const headers = [...new Set(subs.flatMap(Object.keys))]; let csv = '\uFEFF' + headers.join(',') + '\r\n'; subs.forEach(s => { const row = headers.map(h => `"${String(s[h] || '').replace(/"/g, '""')}"`); csv += row.join(',') + '\r\n'; }); const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'dogharoon_data.csv'; document.body.appendChild(link); link.click(); document.body.removeChild(link); } catch (err) { console.error("Error: ", err); alert("خطا در دریافت اطلاعات."); } finally { uiElements.exportBtn.disabled = false; uiElements.exportBtn.textContent = 'دریافت خروجی (CSV)'; } };
-            
-            (async () => { if (await initializeFirebase()) { buildForm(); setupEventListeners(); setupChoiceCards(); updateUI(); } })();
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                if (appState.isSubmitting) return;
+                appState.isSubmitting = true;
+
+                const btn = e.submitter;
+                btn.disabled = true;
+                btn.textContent = 'در حال ارسال...';
+                
+                const form = e.target;
+                const data = new FormData(form);
+                
+                // Combine checkbox values
+                const checkboxNames = [...new Set([...form.querySelectorAll('input[type="checkbox"]')].map(cb => cb.name))];
+                checkboxNames.forEach(name => {
+                    const values = data.getAll(name);
+                    if (values.length > 1) {
+                        data.delete(name);
+                        data.append(name, values.join(' | '));
+                    }
+                });
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: form.method,
+                        body: data,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        uiElements.successModal.classList.remove('opacity-0', 'pointer-events-none');
+                        uiElements.successModal.querySelector('div').classList.add('scale-100');
+                    } else {
+                        const responseData = await response.json();
+                        if (responseData.errors) {
+                             alert("خطا در ارسال فرم: " + responseData.errors.map(error => error.message).join(", "));
+                        } else {
+                            alert("متاسفانه در ثبت اطلاعات خطایی رخ داد. لطفاً دوباره تلاش کنید.");
+                        }
+                    }
+                } catch (err) {
+                    console.error("Error submitting to Formspree: ", err);
+                    alert("خطا در ارتباط با سرور. لطفاً اتصال اینترنت خود را بررسی کنید.");
+                } finally {
+                    appState.isSubmitting = false;
+                    btn.disabled = false;
+                    btn.textContent = 'ارسال نهایی پاسخ‌ها';
+                }
+            };
+
+            // --- Start the application ---
+            buildForm();
+            setupEventListeners();
+            setupChoiceCards();
+            updateUI();
         }
     </script>
 </body>
 </html>
-
