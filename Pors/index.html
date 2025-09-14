@@ -164,26 +164,24 @@
         // Import a specific functions from the Firebase SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-        // *** مهم: اطلاعات اتصال به Firebase باید به صورت پویا از محیط دریافت شود ***
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config)
-            : {
-                // اطلاعات زیر فقط برای تست محلی است و در محیط اصلی کار نخواهد کرد
-                apiKey: "YOUR_FALLBACK_API_KEY",
-                authDomain: "YOUR_FALLBACK_AUTH_DOMAIN",
-                projectId: "YOUR_FALLBACK_PROJECT_ID",
-                storageBucket: "YOUR_FALLBACK_STORAGE_BUCKET",
-                messagingSenderId: "YOUR_FALLBACK_SENDER_ID",
-                appId: "YOUR_FALLBACK_APP_ID"
-            };
-        
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        // **********************************************************************
+        // *** مرحله 1: اطلاعات واقعی پروژه Firebase خود را در اینجا وارد کنید ***
+        // **********************************************************************
+        // این اطلاعات را می‌توانید از مسیر زیر در کنسول Firebase پیدا کنید:
+        // Project Settings > General > Your apps > Web app > SDK setup and configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyA4uzrW8zAOagw0S_xmDGb_SSLZfn8afc8",
+          authDomain: "dogharoun-a9764.firebaseapp.com",
+          projectId: "dogharoun-a9764",
+          storageBucket: "dogharoun-a9764.firebasestorage.app",
+          messagingSenderId: "873490986773",
+          appId: "1:873490986773:web:16871b83bf4c18d4db5b1c"
+        };
 
         // داده‌های مربوط به سوالات پرسشنامه
         const questionsData = [
-            // ... (داده‌های سوالات بدون تغییر باقی می‌مانند) ...
             {
                 legend: "بخش الف: شناسایی و مشخصات ذینفع",
                 questions: [
@@ -257,13 +255,7 @@
 
         function main() {
             // تعریف متغیرهای اصلی برنامه
-            const appState = {
-                db: null, auth: null,
-                currentPageIndex: 0, pages: [],
-                isSubmitting: false
-            };
-
-            // گرفتن ارجاع به عناصر DOM
+            const appState = { db: null, auth: null, currentPageIndex: 0, pages: [], isSubmitting: false };
             const uiElements = {
                 form: document.getElementById('stakeholderForm'),
                 formContainer: document.getElementById('form-container'),
@@ -279,29 +271,26 @@
                 restartBtn: document.getElementById('restartBtn')
             };
             
-            // نمایش پیام خطا در صورت عدم اتصال به Firebase
-            const showConnectionError = () => {
-                uiElements.formWrapper.innerHTML = `<div class="bg-white rounded-2xl shadow-2xl text-center p-10">
-                    <h1 class="text-2xl font-bold text-red-600">خطا در اتصال به سرور</h1>
-                    <p class="text-gray-700 mt-4">متاسفانه امکان بارگذاری پرسشنامه وجود ندارد. لطفا اتصال اینترنت خود را بررسی کرده و صفحه را مجدداً بارگذاری نمایید.</p>
-                </div>`;
+            const showConnectionError = (message) => {
+                uiElements.formWrapper.innerHTML = `<div class="bg-white rounded-2xl shadow-2xl text-center p-10"><h1 class="text-2xl font-bold text-red-600">${message.title}</h1><p class="text-gray-700 mt-4">${message.body}</p></div>`;
             };
             
             // تابع برای مقداردهی اولیه Firebase
             const initializeFirebase = async () => {
                 try {
+                    if (firebaseConfig.apiKey === "YOUR_API_KEY") {
+                        showConnectionError({ title: "خطا در پیکربندی", body: "اطلاعات اتصال به پایگاه داده (Firebase) به درستی در فایل وارد نشده است. لطفاً فایل را ویرایش کرده و اطلاعات صحیح را جایگذاری کنید." });
+                        return false;
+                    }
                     const app = initializeApp(firebaseConfig);
                     appState.db = getFirestore(app);
                     appState.auth = getAuth(app);
-                    if (initialAuthToken) {
-                        await signInWithCustomToken(appState.auth, initialAuthToken);
-                    } else {
-                        await signInAnonymously(appState.auth);
-                    }
+                    await signInAnonymously(appState.auth);
+                    console.log("Firebase initialized and user signed in.");
                     return true;
                 } catch (error) {
                     console.error("Firebase Initialization Failed:", error);
-                    showConnectionError();
+                    showConnectionError({ title: "خطا در اتصال به سرور", body: "متاسفانه امکان بارگذاری پرسشنامه وجود ندارد. لطفا اتصال اینترنت خود را بررسی کرده و صفحه را مجدداً بارگذاری نمایید." });
                     return false;
                 }
             };
@@ -312,7 +301,6 @@
                     const fieldset = document.createElement('fieldset');
                     fieldset.className = 'question-page border-t-2 border-gray-200 pt-6';
                     fieldset.innerHTML = `<legend class="text-2xl font-bold text-gray-700 mb-6">${section.legend}</legend>`;
-                    
                     section.questions.forEach(q => {
                         const qDiv = document.createElement('div');
                         qDiv.className = 'mb-8';
@@ -320,11 +308,9 @@
                         qDiv.appendChild(createInputElement(q));
                         fieldset.appendChild(qDiv);
                     });
-                    
                     uiElements.form.appendChild(fieldset);
                     appState.pages.push(fieldset);
                 });
-                
                 appState.pages.unshift(document.getElementById('introduction-page'));
             };
 
@@ -332,33 +318,21 @@
             const createInputElement = (q) => {
                 const wrapper = document.createElement('div');
                 const container = document.createElement('div');
-                
                 switch (q.type) {
-                    case 'text':
-                        container.innerHTML = `<input type="text" id="${q.id}" name="${q.id}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3">`;
-                        break;
-                    case 'textarea':
-                        container.innerHTML = `<textarea id="${q.id}" name="${q.id}" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3"></textarea>`;
-                        break;
-                    case 'radio':
-                    case 'checkbox':
+                    case 'text': container.innerHTML = `<input type="text" id="${q.id}" name="${q.id}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3">`; break;
+                    case 'textarea': container.innerHTML = `<textarea id="${q.id}" name="${q.id}" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3"></textarea>`; break;
+                    case 'radio': case 'checkbox':
                         container.className = 'space-y-3';
                         q.options.forEach(opt => {
                             const optionId = `${q.id}_${opt.replace(/\s+/g, '_')}`;
                             container.innerHTML += `<div><label for="${optionId}" class="inline-flex items-center cursor-pointer"><input type="${q.type}" id="${optionId}" name="${q.name || q.id}" value="${opt}" class="form-${q.type} ml-3"><span class="text-gray-800">${opt}</span></label></div>`;
                         });
-                        if (q.other) {
-                            container.innerHTML += `<div class="flex items-center"><label class="inline-flex items-center cursor-pointer"><input type="${q.type}" name="${q.name || q.id}" value="سایر" class="form-${q.type} ml-3"> سایر</label><input type="text" name="${q.id}_other" class="mr-2 block w-full sm:w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2" placeholder="لطفاً مشخص کنید"></div>`;
-                        }
+                        if (q.other) container.innerHTML += `<div class="flex items-center"><label class="inline-flex items-center cursor-pointer"><input type="${q.type}" name="${q.name || q.id}" value="سایر" class="form-${q.type} ml-3"> سایر</label><input type="text" name="${q.id}_other" class="mr-2 block w-full sm:w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2" placeholder="لطفاً مشخص کنید"></div>`;
                         break;
-                    case 'scale':
-                        container.innerHTML = `<div class="flex justify-between items-center text-sm text-gray-500 px-1"><span>${q.labels[0]}</span><span>${q.labels[1]}</span></div><div class="flex justify-around p-2 bg-gray-50 rounded-md mt-2">${[1,2,3,4,5].map(v => `<label class="flex flex-col items-center cursor-pointer p-2 rounded-md hover:bg-blue-100 transition-colors"><input type="radio" name="${q.id}" value="${v}" class="form-radio mb-1"> ${v}</label>`).join('')}</div>`;
-                        break;
+                    case 'scale': container.innerHTML = `<div class="flex justify-between items-center text-sm text-gray-500 px-1"><span>${q.labels[0]}</span><span>${q.labels[1]}</span></div><div class="flex justify-around p-2 bg-gray-50 rounded-md mt-2">${[1,2,3,4,5].map(v => `<label class="flex flex-col items-center cursor-pointer p-2 rounded-md hover:bg-blue-100 transition-colors"><input type="radio" name="${q.id}" value="${v}" class="form-radio mb-1"> ${v}</label>`).join('')}</div>`; break;
                     case 'table':
                         let tableHTML = `<div class="impact-table-grid border border-gray-200 rounded-lg p-2 overflow-x-auto"><div class="header label-cell">حوزه تأثیر</div>${[1,2,3,4,5].map(h => `<div class="header" title="${q.headers[h-1]}">${h}</div>`).join('')}`;
-                        q.rows.forEach(row => {
-                            tableHTML += `<div class="label-cell">${row.label}</div>${[1,2,3,4,5].map(v => `<div class="radio-cell"><input type="radio" name="${row.id}" value="${v}" class="form-radio"></div>`).join('')}`;
-                        });
+                        q.rows.forEach(row => { tableHTML += `<div class="label-cell">${row.label}</div>${[1,2,3,4,5].map(v => `<div class="radio-cell"><input type="radio" name="${row.id}" value="${v}" class="form-radio"></div>`).join('')}`; });
                         tableHTML += '</div>';
                         container.innerHTML = tableHTML;
                         break;
@@ -371,166 +345,77 @@
                 return wrapper;
             };
 
-            // تابع برای اعتبارسنجی پاسخ‌های صفحه فعلی
             const validateCurrentPage = () => {
                 document.querySelectorAll('.validation-error').forEach(el => el.textContent = '');
                 let isValid = true;
                 const pageIndex = appState.currentPageIndex;
-
-                if (pageIndex === 0) return true; // از صفحه مقدمه بدون اعتبارسنجی عبور کن
-
+                if (pageIndex === 0) return true;
                 const currentSection = questionsData[pageIndex - 1];
                 if (!currentSection) return true;
-
                 currentSection.questions.forEach(q => {
                     const errorEl = document.getElementById(`${q.id}_error`);
                     let questionIsValid = true;
-
                     switch (q.type) {
-                        case 'radio':
-                        case 'scale':
-                            if (!document.querySelector(`input[name="${q.name || q.id}"]:checked`)) questionIsValid = false;
-                            break;
-                        case 'checkbox':
-                            if (document.querySelectorAll(`input[name="${q.name || q.id}"]:checked`).length === 0) questionIsValid = false;
-                            break;
-                        case 'textarea':
-                            const textarea = document.getElementById(q.id);
-                            if (textarea && textarea.value.trim().length < 10) {
-                                errorEl.textContent = 'لطفاً حداقل ۱۰ کاراکتر وارد کنید.';
-                                questionIsValid = false;
-                            }
-                            break;
-                        case 'table':
-                            q.rows.forEach(row => {
-                                if (!document.querySelector(`input[name="${row.id}"]:checked`)) questionIsValid = false;
-                            });
-                            break;
+                        case 'radio': case 'scale': if (!document.querySelector(`input[name="${q.name || q.id}"]:checked`)) questionIsValid = false; break;
+                        case 'checkbox': if (document.querySelectorAll(`input[name="${q.name || q.id}"]:checked`).length === 0) questionIsValid = false; break;
+                        case 'textarea': const textarea = document.getElementById(q.id); if (textarea && textarea.value.trim().length < 10) { errorEl.textContent = 'لطفاً حداقل ۱۰ کاراکتر وارد کنید.'; questionIsValid = false; } break;
+                        case 'table': q.rows.forEach(row => { if (!document.querySelector(`input[name="${row.id}"]:checked`)) questionIsValid = false; }); break;
                     }
-                    
-                    if (!questionIsValid) {
-                        isValid = false;
-                        if (['radio', 'checkbox', 'scale', 'table'].includes(q.type)) {
-                             errorEl.textContent = 'پاسخ به این سوال الزامی است.';
-                        }
-                    }
+                    if (!questionIsValid) { isValid = false; if (['radio', 'checkbox', 'scale', 'table'].includes(q.type)) { errorEl.textContent = 'پاسخ به این سوال الزامی است.'; } }
                 });
                 return isValid;
             };
 
-            // تابع برای به‌روزرسانی UI
             const updateUI = () => {
                 const totalPages = appState.pages.length;
                 appState.pages.forEach((page, index) => page.classList.toggle('active', index === appState.currentPageIndex));
-
-                if (appState.currentPageIndex === totalPages) {
-                    uiElements.formContainer.classList.add('hidden');
-                    uiElements.finalPage.classList.remove('hidden');
-                } else {
-                    uiElements.formContainer.classList.remove('hidden');
-                    uiElements.finalPage.classList.add('hidden');
-                }
-
+                if (appState.currentPageIndex === totalPages) { uiElements.formContainer.classList.add('hidden'); uiElements.finalPage.classList.remove('hidden'); } else { uiElements.formContainer.classList.remove('hidden'); uiElements.finalPage.classList.add('hidden'); }
                 uiElements.prevBtn.style.visibility = appState.currentPageIndex === 0 ? 'hidden' : 'visible';
                 uiElements.nextBtn.textContent = appState.currentPageIndex === totalPages - 1 ? 'پایان و مشاهده فرم' : 'بعدی';
-                
                 const progressPercentage = appState.currentPageIndex > 0 ? (appState.currentPageIndex / (totalPages - 1)) * 100 : 0;
                 uiElements.progressBar.style.width = `${progressPercentage}%`;
                 uiElements.progressText.textContent = appState.currentPageIndex === 0 ? `مقدمه` : `صفحه ${appState.currentPageIndex} از ${totalPages - 1}`;
             };
             
-            // تابع برای مدیریت رویدادها
             const setupEventListeners = () => {
-                uiElements.nextBtn.addEventListener('click', () => {
-                    if (validateCurrentPage()) {
-                        if (appState.currentPageIndex < appState.pages.length) {
-                            appState.currentPageIndex++;
-                            updateUI();
-                        }
-                    }
-                });
-
-                uiElements.prevBtn.addEventListener('click', () => {
-                    if (appState.currentPageIndex > 0) {
-                        appState.currentPageIndex--;
-                        updateUI();
-                    }
-                });
-
-                uiElements.adminBtn.addEventListener('click', () => {
-                    const code = prompt('لطفا کد مدیر را وارد کنید:');
-                    if (code === '212') {
-                        uiElements.exportBtn.classList.remove('hidden');
-                        alert('دسترسی مدیر فعال شد.');
-                    } else { alert('کد وارد شده اشتباه است.'); }
-                });
-
+                uiElements.nextBtn.addEventListener('click', () => { if (validateCurrentPage()) { if (appState.currentPageIndex < appState.pages.length) { appState.currentPageIndex++; updateUI(); } } });
+                uiElements.prevBtn.addEventListener('click', () => { if (appState.currentPageIndex > 0) { appState.currentPageIndex--; updateUI(); } });
+                uiElements.adminBtn.addEventListener('click', () => { const code = prompt('لطفا کد مدیر را وارد کنید:'); if (code === '212') { uiElements.exportBtn.classList.remove('hidden'); alert('دسترسی مدیر فعال شد.'); } else { alert('کد وارد شده اشتباه است.'); } });
                 uiElements.exportBtn.addEventListener('click', handleExport);
                 uiElements.form.addEventListener('submit', handleSubmit);
-                
-                uiElements.restartBtn.addEventListener('click', () => {
-                    uiElements.successModal.classList.add('opacity-0', 'pointer-events-none');
-                    setTimeout(() => location.reload(), 300);
-                });
+                uiElements.restartBtn.addEventListener('click', () => { uiElements.successModal.classList.add('opacity-0', 'pointer-events-none'); setTimeout(() => location.reload(), 300); });
             };
 
-            // تابع برای مدیریت ارسال فرم
             const handleSubmit = async (e) => {
                 e.preventDefault();
                 if (appState.isSubmitting) return;
-
                 appState.isSubmitting = true;
                 const submitButton = e.submitter;
                 submitButton.disabled = true;
                 submitButton.textContent = 'در حال ارسال...';
-
                 const formData = new FormData(uiElements.form);
                 const submission = {};
-                for (const [key, value] of formData.entries()) {
-                    if (document.querySelector(`[name="${key}"][type="checkbox"]`)) {
-                        if (!submission[key]) submission[key] = [];
-                        submission[key].push(value);
-                    } else { submission[key] = value; }
-                }
-                Object.keys(submission).forEach(key => {
-                    if (Array.isArray(submission[key])) submission[key] = submission[key].join(' | ');
-                });
-
+                for (const [key, value] of formData.entries()) { if (document.querySelector(`[name="${key}"][type="checkbox"]`)) { if (!submission[key]) submission[key] = []; submission[key].push(value); } else { submission[key] = value; } }
+                Object.keys(submission).forEach(key => { if (Array.isArray(submission[key])) submission[key] = submission[key].join(' | '); });
                 try {
                     await addDoc(collection(appState.db, "submissions"), submission);
                     uiElements.successModal.classList.remove('opacity-0', 'pointer-events-none');
                     uiElements.successModal.querySelector('div').classList.add('scale-100');
-                } catch (error) {
-                    console.error("Error adding document: ", error);
-                    alert("خطایی در ثبت اطلاعات رخ داد. لطفا دوباره تلاش کنید.");
-                } finally {
-                    appState.isSubmitting = false;
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'ارسال نهایی پاسخ‌ها';
-                }
+                } catch (error) { console.error("Error adding document: ", error); alert("خطایی در ثبت اطلاعات رخ داد. لطفا دوباره تلاش کنید.");
+                } finally { appState.isSubmitting = false; submitButton.disabled = false; submitButton.textContent = 'ارسال نهایی پاسخ‌ها'; }
             };
 
-            // تابع برای خروجی گرفتن اطلاعات
             const handleExport = async () => {
                 uiElements.exportBtn.disabled = true;
                 uiElements.exportBtn.textContent = 'در حال آماده‌سازی...';
                 try {
                     const querySnapshot = await getDocs(collection(appState.db, "submissions"));
                     const allSubmissions = querySnapshot.docs.map(doc => doc.data());
-
-                    if (allSubmissions.length === 0) {
-                        alert('هنوز هیچ پاسخی برای خروجی گرفتن ثبت نشده است.');
-                        return;
-                    }
-                    
+                    if (allSubmissions.length === 0) { alert('هنوز هیچ پاسخی برای خروجی گرفتن ثبت نشده است.'); return; }
                     const headers = Array.from(new Set(allSubmissions.flatMap(obj => Object.keys(obj))));
                     let csvContent = '\uFEFF';
                     csvContent += headers.join(',') + '\r\n';
-                    allSubmissions.forEach(submission => {
-                        const row = headers.map(header => `"${String(submission[header] || '').replace(/"/g, '""')}"`);
-                        csvContent += row.join(',') + '\r\n';
-                    });
-
+                    allSubmissions.forEach(submission => { const row = headers.map(header => `"${String(submission[header] || '').replace(/"/g, '""')}"`); csvContent += row.join(',') + '\r\n'; });
                     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
                     const link = document.createElement('a');
                     link.href = URL.createObjectURL(blob);
@@ -538,23 +423,11 @@
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
-                } catch (error) {
-                    console.error("Error fetching documents for export: ", error);
-                    alert("خطایی در دریافت اطلاعات از پایگاه داده رخ داد.");
-                } finally {
-                    uiElements.exportBtn.disabled = false;
-                    uiElements.exportBtn.textContent = 'دریافت خروجی اکسل (CSV)';
-                }
+                } catch (error) { console.error("Error fetching documents for export: ", error); alert("خطایی در دریافت اطلاعات از پایگاه داده رخ داد.");
+                } finally { uiElements.exportBtn.disabled = false; uiElements.exportBtn.textContent = 'دریافت خروجی اکسل (CSV)'; }
             };
             
-            // --- نقطه شروع اجرای برنامه ---
-            (async () => {
-                if (await initializeFirebase()) {
-                    buildForm();
-                    setupEventListeners();
-                    updateUI();
-                }
-            })();
+            (async () => { if (await initializeFirebase()) { buildForm(); setupEventListeners(); updateUI(); } })();
         }
     </script>
 </body>
