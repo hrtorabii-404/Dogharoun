@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پرسشنامه طرح جامع منطقه آزاد دوغارون</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .question-page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: translateX(20px);
+        }
+        .question-page.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+        /* استایل‌های سفارشی برای رادیو باتن و چک‌باکس */
+        .form-radio, .form-checkbox {
+            -webkit-appearance: none; -moz-appearance: none; appearance: none;
+            width: 1.5em; height: 1.5em;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            vertical-align: middle;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .form-checkbox { border-radius: 0.375rem; }
+        .form-radio:checked, .form-checkbox:checked {
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+        .form-radio:checked::before {
+            content: ''; display: block;
+            width: 0.75em; height: 0.75em;
+            border-radius: 50%;
+            background-color: white;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .form-checkbox:checked::before {
+            content: '✓'; display: block;
+            color: white; font-size: 1em; font-weight: bold;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -52%);
+        }
+        /* نوار پیشرفت */
+        #progress-container {
+            width: 100%; background-color: #e5e7eb;
+            border-radius: 9999px; overflow: hidden;
+        }
+        #progress-bar {
+            height: 10px; width: 0%;
+            background-color: #3b82f6; border-radius: 9999px;
+            transition: width 0.4s ease-in-out;
+        }
+        /* استایل مودال */
+        .modal { transition: opacity 0.3s ease; }
+        .modal > div { transition: transform 0.3s ease; }
+        
+        /* استایل جدول */
+        .impact-table-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(5, 1fr);
+            gap: 0.5rem;
+            align-items: center; text-align: center;
+        }
+        .impact-table-grid .header { font-weight: bold; padding: 0.5rem; background-color: #f3f4f6; }
+        .impact-table-grid .label-cell { text-align: right; padding: 0.5rem; font-weight: 500; }
+        .impact-table-grid .radio-cell { display: flex; justify-content: center; align-items: center; }
+        
+        /* استایل پیام خطا */
+        .validation-error {
+            color: #ef4444; /* red-500 */
+            font-size: 0.875rem; /* text-sm */
+            margin-top: 0.5rem; /* mt-2 */
+            min-height: 1.25rem; /* جلوگیری از پرش صفحه */
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto max-w-3xl p-4 sm:p-8 min-h-screen flex flex-col justify-center">
+        <div id="form-wrapper">
+            <!-- این کانتینر اصلی فرم است که محتوای آن به صورت پویا مدیریت می‌شود -->
+            <div class="bg-white rounded-2xl shadow-2xl p-6 sm:p-10 transition-all duration-500" id="form-container">
+                <!-- Header -->
+                <div class="text-center mb-6">
+                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">پرسشنامه جامع سنجش دیدگاه ذینفعان</h1>
+                    <p class="text-gray-600 mt-3 text-lg">طرح جامع منطقه آزاد تجاری-صنعتی دوغارون</p>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="mb-8">
+                    <div id="progress-container">
+                        <div id="progress-bar"></div>
+                    </div>
+                    <p id="progress-text" class="text-center text-sm text-gray-500 mt-2"></p>
+                </div>
+                
+                <form id="stakeholderForm" novalidate>
+                    <div id="introduction-page" class="question-page active">
+                        <div class="bg-blue-50 border-r-4 border-blue-500 p-5 rounded-lg mb-6 text-justify">
+                            <h2 class="font-bold text-xl text-blue-800 mb-2">مقدمه</h2>
+                            <p class="text-gray-700">با سلام و احترام، این پرسشنامه به منظور شناسایی و درک دیدگاه‌ها، منافع و انتظارات کلیه افراد، گروه‌ها و سازمان‌هایی که تحت تأثیر طرح جامع منطقه آزاد دوغارون قرار می‌گیرند یا بر آن تأثیرگذار هستند، طراحی شده است. مشارکت شما در این نظرسنجی به ما کمک می‌کند تا برنامه‌ریزی دقیق‌تر و فراگیرتری داشته باشیم. اطلاعات شما به صورت محرمانه محفوظ خواهد ماند.</p>
+                        </div>
+                    </div>
+                    <!-- سوالات توسط جاوااسکریپت در اینجا تزریق خواهند شد -->
+                </form>
+                
+                <!-- دکمه‌های ناوبری -->
+                <div id="navigation-controls" class="mt-8 flex justify-between items-center">
+                    <button type="button" id="prevBtn" class="bg-gray-200 text-gray-700 font-bold py-2 px-6 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-300 transition duration-300">قبلی</button>
+                    <button type="button" id="nextBtn" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-300">بعدی</button>
+                </div>
+                
+                <!-- بخش مدیر -->
+                <div class="text-center mt-10 border-t pt-4">
+                    <button type="button" id="adminBtn" class="text-xs text-gray-400 hover:text-blue-600 transition">دسترسی مدیر</button>
+                    <button type="button" id="exportBtn" class="hidden mt-2 bg-green-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition duration-300">دریافت خروجی اکسل (CSV)</button>
+                </div>
+            </div>
+            
+            <!-- صفحه ارسال نهایی -->
+            <div id="final-page" class="hidden text-center p-10 bg-white rounded-2xl shadow-2xl">
+                <h2 class="text-2xl font-bold mb-4">از وقتی که گذاشتید سپاسگزاریم!</h2>
+                <p class="text-gray-600 mb-8">برای ثبت نهایی پاسخ‌های خود، لطفا دکمه زیر را فشار دهید.</p>
+                <button type="submit" form="stakeholderForm" class="w-full max-w-xs mx-auto bg-blue-600 text-white font-bold py-4 px-10 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition transform hover:scale-105 duration-300 text-lg shadow-lg">ارسال نهایی پاسخ‌ها</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- مودال موفقیت -->
+    <div id="successModal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 opacity-0 pointer-events-none">
+        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-sm w-full text-center transform scale-95">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
+                <svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800">با تشکر!</h3>
+            <p class="text-gray-600 mt-2">پاسخ شما با موفقیت ثبت شد.</p>
+            <div class="mt-8 flex justify-center">
+                <button id="restartBtn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 w-full max-w-xs">بازگشت به صفحه نخست</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import a specific functions from the Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        // *** مهم: اطلاعات اتصال به Firebase باید به صورت پویا از محیط دریافت شود ***
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config)
+            : {
+                // اطلاعات زیر فقط برای تست محلی است و در محیط اصلی کار نخواهد کرد
+                apiKey: "YOUR_FALLBACK_API_KEY",
+                authDomain: "YOUR_FALLBACK_AUTH_DOMAIN",
+                projectId: "YOUR_FALLBACK_PROJECT_ID",
+                storageBucket: "YOUR_FALLBACK_STORAGE_BUCKET",
+                messagingSenderId: "YOUR_FALLBACK_SENDER_ID",
+                appId: "YOUR_FALLBACK_APP_ID"
+            };
+        
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // داده‌های مربوط به سوالات پرسشنامه
+        const questionsData = [
+            // ... (داده‌های سوالات بدون تغییر باقی می‌مانند) ...
+            {
+                legend: "بخش الف: شناسایی و مشخصات ذینفع",
+                questions: [
+                    { id: 'q1_role', number: 1, text: 'کدام یک از گزینه‌های زیر، نقش یا سازمان شما را به بهترین شکل توصیف می‌کند؟', type: 'radio', options: ['سازمان/نهاد دولتی', 'کسب‌وکار محلی / بخش خصوصی', 'سازمان غیردولتی (NGO) / گروه اجتماعی', 'ساکن محلی', 'نخبه دانشگاهی / کارشناس / مشاور', 'نماینده رسانه'], other: true },
+                    { id: 'q2_org_name', number: 2, text: 'لطفاً نام سازمان/اداره خود را (در صورت اطلاق) ذکر کنید.', type: 'text' },
+                    { id: 'q3_duration', number: 3, text: 'چه مدت در این منطقه سکونت یا فعالیت داشته‌اید؟', type: 'radio', options: ['کمتر از ۱ سال', '۱ تا ۵ سال', '۶ تا ۱۰ سال', 'بیش از ۱۰ سال'] },
+                    { id: 'q4_expertise', number: 4, text: 'لطفاً حوزه اصلی فعالیت یا تخصص خود را به طور خلاصه بیان کنید.', type: 'textarea' }
+                ]
+            },
+            {
+                legend: "بخش ب: آگاهی، نگرش و برجستگی طرح",
+                questions: [
+                    { id: 'q5_familiarity', number: 5, text: 'تا چه حد با اهداف و جزئیات طرح آشنا هستید؟', type: 'scale', labels: ['اصلاً آشنا نیستم', 'بسیار آشنا هستم'] },
+                    { id: 'q6_attitude', number: 6, text: 'بر اساس اطلاعات فعلی خود، نگرش اولیه شما نسبت به این طرح چیست؟', type: 'scale', labels: ['بسیار منفی', 'بسیار مثبت'] },
+                    { id: 'q7_urgency', number: 7, text: 'به نظر شما، حل مسائلی که این طرح به آنها می‌پردازد، تا چه حد فوریت دارد؟', type: 'scale', labels: ['اصلاً فوری نیست', 'بسیار فوری است'] },
+                    { id: 'q8_legitimacy', number: 8, text: 'تا چه اندازه احساس می‌کنید که شما (یا سازمانتان) به طور مشروع و قانونی در نتایج این طرح ذی‌حق و ذی‌نفع هستید؟', type: 'scale', labels: ['هیچ حق مشروعی ندارم', 'حق مشروع بسیار قوی دارم'] }
+                ]
+            },
+            {
+                legend: "بخش ج: تحلیل منافع، علایق و اثرات بالقوه",
+                questions: [
+                    { id: 'q9_impact', number: 9, text: 'لطفاً تأثیر بالقوه این طرح را بر هر یک از حوزه‌های زیر ارزیابی کنید.', type: 'table', headers: ['بسیار منفی', 'منفی', 'بی‌تأثیر', 'مثبت', 'بسیار مثبت'], rows: [
+                        { id: 'q9_impact_economic', label: 'اقتصادی (اشتغال، درآمد)' }, { id: 'q9_impact_environmental', label: 'زیست‌محیطی (فضای سبز، آلودگی)' }, { id: 'q9_impact_social', label: 'اجتماعی (انسجام، خدمات)' },
+                        { id: 'q9_impact_safety', label: 'ایمنی و امنیت' }, { id: 'q9_impact_infrastructure', label: 'زیرساخت و حمل‌ونقل' }, { id: 'q9_impact_property', label: 'ارزش املاک و زمین' }, { id: 'q9_impact_heritage', label: 'میراث فرهنگی و تاریخی' }
+                    ]},
+                    { id: 'q10_advantage', number: 10, text: 'از نظر شما، مهم‌ترین مزیت یا فرصت بالقوه این طرح چیست؟', type: 'textarea' },
+                    { id: 'q11_disadvantage', number: 11, text: 'از نظر شما، مهم‌ترین عیب، ریسک یا تهدید بالقوه مرتبط با این طرح چیست؟', type: 'textarea' }
+                ]
+            },
+            {
+                legend: "بخش د: سنجش نفوذ و قدرت",
+                questions: [
+                     { id: 'q12_involvement', number: 12, text: 'آیا نقش یا سازمان شما به طور رسمی در هر یک از فرآیندهای برنامه‌ریزی، تصویب یا نظارتی برای طرح‌هایی از این نوع دخیل است؟', type: 'radio', options: ['بله', 'خیر', 'نمی‌دانم'] },
+                     { id: 'q13_interaction', number: 13, text: 'نقش یا سازمان شما به چه میزانی با تصمیم‌گیرندگان کلیدی تعامل دارد؟', type: 'scale', labels: ['هرگز', 'بسیار زیاد'] },
+                     { id: 'q14_control', number: 14, text: 'سازمان شما تا چه حد بر منابعی (مانند بودجه، زمین، نیروی انسانی) که برای موفقیت این طرح حیاتی هستند، کنترل دارد؟', type: 'scale', labels: ['هیچ کنترلی ندارد', 'کنترل قابل توجهی دارد'] },
+                     { id: 'q15_influencers', number: 15, text: 'به نظر شما، کدام افراد، گروه‌ها یا سازمان‌ها بیشترین نفوذ را در تعیین نتیجه نهایی طرح‌هایی مانند این در منطقه ما دارند؟', type: 'textarea' }
+                ]
+            },
+            {
+                legend: "بخش ه: انتظارات، مشارکت و ترجیحات تعامل",
+                questions: [
+                    { id: 'q16_understanding', number: 16, text: 'مهم‌ترین چیزی که تیم پروژه باید از دیدگاه شما درک کند، چیست؟', type: 'textarea' },
+                    { id: 'q17_suggestions', number: 17, text: 'چه پیشنهادات یا توصیه‌های مشخصی برای بهبود طراحی یا اجرای طرح دارید؟', type: 'textarea' },
+                    { id: 'q18_contact_pref', number: 18, text: 'ترجیح می‌دهید از چه طریقی از پیشرفت طرح مطلع شوید؟ (می‌توانید چند گزینه را انتخاب کنید)', type: 'checkbox', options: ['خبرنامه ایمیلی', 'جلسات عمومی', 'به‌روزرسانی وب‌سایت', 'شبکه‌های اجتماعی', 'گزارش‌های رسمی'], other: true },
+                    { id: 'q19_participation_level', number: 19, text: 'شما یا سازمانتان تمایل به چه سطحی از مشارکت در ادامه فرآیند دارید؟', type: 'radio', options: ['فقط دریافت اطلاعات و به‌روزرسانی‌های دوره‌ای', 'ارائه بازخورد در مورد پیشنهادهای مشخص', 'مشارکت در یک کارگروه تخصصی یا مشورتی', 'مشارکت فعال در فرآیند تصمیم‌گیری', 'تمایلی به مشارکت ندارم'] },
+                    { id: 'q20_followup', number: 20, text: 'آیا تمایل دارید در یک مصاحبه تکمیلی یا جلسه گروه کانونی شرکت کنید؟', type: 'radio', options: ['بله', 'خیر'] }
+                ]
+            },
+            {
+                 legend: "بخش و: اطلاعات جمعیت‌شناختی",
+                 questions: [
+                    { id: 'q21_age', number: 21, text: 'لطفاً محدوده سنی خود را مشخص کنید.', type: 'radio', options: ['زیر ۲۵ سال', '۲۵-۳۴ سال', '۳۵-۴۴ سال', '۴۵-۵۴ سال', '۵۵-۶۴ سال', '۶۵ سال و بالاتر'] },
+                    { id: 'q22_gender', number: 22, text: 'جنسیت:', type: 'radio', options: ['زن', 'مرد', 'ترجیح می‌دهم نگویم'] },
+                    { id: 'q23_education', number: 23, text: 'سطح تحصیلات شما چیست؟', type: 'radio', options: ['زیر دیپلم', 'دیپلم', 'کاردانی', 'کارشناسی', 'کارشناسی ارشد', 'دکتری و بالاتر'] }
+                 ]
+            },
+            {
+                legend: "بخش ز: چشم‌انداز آینده و پیشنهادات راهبردی",
+                questions: [
+                    { id: 's4_q24_priority', name: 's4_q24_priority', number: 24, text: 'برای تحقق چشم‌انداز "تبدیل شدن دوغارون به هاب لجستیکی"، کدام اقدام را دارای بالاترین اولویت می‌دانید؟', type: 'radio', options: ['تکمیل و بهره‌برداری کامل از راه‌آهن خواف-هرات', 'ایجاد یک مدیریت واحد و یکپارچه در مرز', 'دیجیتال‌سازی و هوشمندسازی کامل فرآیندهای گمرکی', 'ارائه بسته‌های تشویقی برای جذب سرمایه‌گذاری خارجی', 'تمرکز بر توسعه روابط دیپلماتیک و اقتصادی پایدار'] },
+                    { id: 's4_q25_focus', name: 's4_q25_focus', number: 25, text: 'منطقه آزاد دوغارون برای توسعه پایدار، باید بر کدام حوزه‌های فعالیتی (علاوه بر ترانزیت) تمرکز کند؟ (حداکثر ۳ گزینه)', type: 'checkbox', options: ['صنایع تبدیلی و تکمیلی', 'مونتاژ و تولید کالاهای صادرات‌محور', 'انرژی‌های تجدیدپذیر', 'خدمات مالی، بیمه‌ای و بانکی', 'گردشگری', 'انبارداری و سردخانه‌های استراتژیک'], limit: 3 },
+                    { id: 's4_q26_participation', name: 's4_q26_participation', number: 26, text: 'برای جلب مشارکت مؤثر جامعه محلی و بخش خصوصی چه پیشنهادی دارید؟', type: 'textarea' },
+                    { id: 's4_q27_suggestion_board', name: 's4_q27_suggestion_board', number: 27, text: 'اگر یک پیشنهاد کلیدی برای هیئت مدیره سازمان منطقه آزاد دوغارون داشتید، آن پیشنهاد چه بود؟', type: 'textarea' },
+                    { id: 's4_q28_other', name: 's4_q28_other', number: 28, text: 'هرگونه نظر، دیدگاه یا پیشنهاد دیگری را لطفاً مرقوم فرمایید.', type: 'textarea' }
+                ]
+            }
+        ];
+        
+        // تابع اصلی که با بارگذاری کامل صفحه اجرا می‌شود
+        document.addEventListener('DOMContentLoaded', main);
+
+        function main() {
+            // تعریف متغیرهای اصلی برنامه
+            const appState = {
+                db: null, auth: null,
+                currentPageIndex: 0, pages: [],
+                isSubmitting: false
+            };
+
+            // گرفتن ارجاع به عناصر DOM
+            const uiElements = {
+                form: document.getElementById('stakeholderForm'),
+                formContainer: document.getElementById('form-container'),
+                formWrapper: document.getElementById('form-wrapper'),
+                prevBtn: document.getElementById('prevBtn'),
+                nextBtn: document.getElementById('nextBtn'),
+                adminBtn: document.getElementById('adminBtn'),
+                exportBtn: document.getElementById('exportBtn'),
+                finalPage: document.getElementById('final-page'),
+                progressText: document.getElementById('progress-text'),
+                progressBar: document.getElementById('progress-bar'),
+                successModal: document.getElementById('successModal'),
+                restartBtn: document.getElementById('restartBtn')
+            };
+            
+            // نمایش پیام خطا در صورت عدم اتصال به Firebase
+            const showConnectionError = () => {
+                uiElements.formWrapper.innerHTML = `<div class="bg-white rounded-2xl shadow-2xl text-center p-10">
+                    <h1 class="text-2xl font-bold text-red-600">خطا در اتصال به سرور</h1>
+                    <p class="text-gray-700 mt-4">متاسفانه امکان بارگذاری پرسشنامه وجود ندارد. لطفا اتصال اینترنت خود را بررسی کرده و صفحه را مجدداً بارگذاری نمایید.</p>
+                </div>`;
+            };
+            
+            // تابع برای مقداردهی اولیه Firebase
+            const initializeFirebase = async () => {
+                try {
+                    const app = initializeApp(firebaseConfig);
+                    appState.db = getFirestore(app);
+                    appState.auth = getAuth(app);
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(appState.auth, initialAuthToken);
+                    } else {
+                        await signInAnonymously(appState.auth);
+                    }
+                    return true;
+                } catch (error) {
+                    console.error("Firebase Initialization Failed:", error);
+                    showConnectionError();
+                    return false;
+                }
+            };
+
+            // تابع برای ساخت HTML سوالات
+            const buildForm = () => {
+                questionsData.forEach(section => {
+                    const fieldset = document.createElement('fieldset');
+                    fieldset.className = 'question-page border-t-2 border-gray-200 pt-6';
+                    fieldset.innerHTML = `<legend class="text-2xl font-bold text-gray-700 mb-6">${section.legend}</legend>`;
+                    
+                    section.questions.forEach(q => {
+                        const qDiv = document.createElement('div');
+                        qDiv.className = 'mb-8';
+                        qDiv.innerHTML = `<label class="block text-gray-700 font-medium mb-4 text-lg" for="${q.id}">${q.number}. ${q.text}</label>`;
+                        qDiv.appendChild(createInputElement(q));
+                        fieldset.appendChild(qDiv);
+                    });
+                    
+                    uiElements.form.appendChild(fieldset);
+                    appState.pages.push(fieldset);
+                });
+                
+                appState.pages.unshift(document.getElementById('introduction-page'));
+            };
+
+            // تابع برای ایجاد اینپوت‌های مختلف به همراه محل نمایش خطا
+            const createInputElement = (q) => {
+                const wrapper = document.createElement('div');
+                const container = document.createElement('div');
+                
+                switch (q.type) {
+                    case 'text':
+                        container.innerHTML = `<input type="text" id="${q.id}" name="${q.id}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3">`;
+                        break;
+                    case 'textarea':
+                        container.innerHTML = `<textarea id="${q.id}" name="${q.id}" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3"></textarea>`;
+                        break;
+                    case 'radio':
+                    case 'checkbox':
+                        container.className = 'space-y-3';
+                        q.options.forEach(opt => {
+                            const optionId = `${q.id}_${opt.replace(/\s+/g, '_')}`;
+                            container.innerHTML += `<div><label for="${optionId}" class="inline-flex items-center cursor-pointer"><input type="${q.type}" id="${optionId}" name="${q.name || q.id}" value="${opt}" class="form-${q.type} ml-3"><span class="text-gray-800">${opt}</span></label></div>`;
+                        });
+                        if (q.other) {
+                            container.innerHTML += `<div class="flex items-center"><label class="inline-flex items-center cursor-pointer"><input type="${q.type}" name="${q.name || q.id}" value="سایر" class="form-${q.type} ml-3"> سایر</label><input type="text" name="${q.id}_other" class="mr-2 block w-full sm:w-1/2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2" placeholder="لطفاً مشخص کنید"></div>`;
+                        }
+                        break;
+                    case 'scale':
+                        container.innerHTML = `<div class="flex justify-between items-center text-sm text-gray-500 px-1"><span>${q.labels[0]}</span><span>${q.labels[1]}</span></div><div class="flex justify-around p-2 bg-gray-50 rounded-md mt-2">${[1,2,3,4,5].map(v => `<label class="flex flex-col items-center cursor-pointer p-2 rounded-md hover:bg-blue-100 transition-colors"><input type="radio" name="${q.id}" value="${v}" class="form-radio mb-1"> ${v}</label>`).join('')}</div>`;
+                        break;
+                    case 'table':
+                        let tableHTML = `<div class="impact-table-grid border border-gray-200 rounded-lg p-2 overflow-x-auto"><div class="header label-cell">حوزه تأثیر</div>${[1,2,3,4,5].map(h => `<div class="header" title="${q.headers[h-1]}">${h}</div>`).join('')}`;
+                        q.rows.forEach(row => {
+                            tableHTML += `<div class="label-cell">${row.label}</div>${[1,2,3,4,5].map(v => `<div class="radio-cell"><input type="radio" name="${row.id}" value="${v}" class="form-radio"></div>`).join('')}`;
+                        });
+                        tableHTML += '</div>';
+                        container.innerHTML = tableHTML;
+                        break;
+                }
+                wrapper.appendChild(container);
+                const errorDiv = document.createElement('div');
+                errorDiv.id = `${q.id}_error`;
+                errorDiv.className = 'validation-error';
+                wrapper.appendChild(errorDiv);
+                return wrapper;
+            };
+
+            // تابع برای اعتبارسنجی پاسخ‌های صفحه فعلی
+            const validateCurrentPage = () => {
+                document.querySelectorAll('.validation-error').forEach(el => el.textContent = '');
+                let isValid = true;
+                const pageIndex = appState.currentPageIndex;
+
+                if (pageIndex === 0) return true; // از صفحه مقدمه بدون اعتبارسنجی عبور کن
+
+                const currentSection = questionsData[pageIndex - 1];
+                if (!currentSection) return true;
+
+                currentSection.questions.forEach(q => {
+                    const errorEl = document.getElementById(`${q.id}_error`);
+                    let questionIsValid = true;
+
+                    switch (q.type) {
+                        case 'radio':
+                        case 'scale':
+                            if (!document.querySelector(`input[name="${q.name || q.id}"]:checked`)) questionIsValid = false;
+                            break;
+                        case 'checkbox':
+                            if (document.querySelectorAll(`input[name="${q.name || q.id}"]:checked`).length === 0) questionIsValid = false;
+                            break;
+                        case 'textarea':
+                            const textarea = document.getElementById(q.id);
+                            if (textarea && textarea.value.trim().length < 10) {
+                                errorEl.textContent = 'لطفاً حداقل ۱۰ کاراکتر وارد کنید.';
+                                questionIsValid = false;
+                            }
+                            break;
+                        case 'table':
+                            q.rows.forEach(row => {
+                                if (!document.querySelector(`input[name="${row.id}"]:checked`)) questionIsValid = false;
+                            });
+                            break;
+                    }
+                    
+                    if (!questionIsValid) {
+                        isValid = false;
+                        if (['radio', 'checkbox', 'scale', 'table'].includes(q.type)) {
+                             errorEl.textContent = 'پاسخ به این سوال الزامی است.';
+                        }
+                    }
+                });
+                return isValid;
+            };
+
+            // تابع برای به‌روزرسانی UI
+            const updateUI = () => {
+                const totalPages = appState.pages.length;
+                appState.pages.forEach((page, index) => page.classList.toggle('active', index === appState.currentPageIndex));
+
+                if (appState.currentPageIndex === totalPages) {
+                    uiElements.formContainer.classList.add('hidden');
+                    uiElements.finalPage.classList.remove('hidden');
+                } else {
+                    uiElements.formContainer.classList.remove('hidden');
+                    uiElements.finalPage.classList.add('hidden');
+                }
+
+                uiElements.prevBtn.style.visibility = appState.currentPageIndex === 0 ? 'hidden' : 'visible';
+                uiElements.nextBtn.textContent = appState.currentPageIndex === totalPages - 1 ? 'پایان و مشاهده فرم' : 'بعدی';
+                
+                const progressPercentage = appState.currentPageIndex > 0 ? (appState.currentPageIndex / (totalPages - 1)) * 100 : 0;
+                uiElements.progressBar.style.width = `${progressPercentage}%`;
+                uiElements.progressText.textContent = appState.currentPageIndex === 0 ? `مقدمه` : `صفحه ${appState.currentPageIndex} از ${totalPages - 1}`;
+            };
+            
+            // تابع برای مدیریت رویدادها
+            const setupEventListeners = () => {
+                uiElements.nextBtn.addEventListener('click', () => {
+                    if (validateCurrentPage()) {
+                        if (appState.currentPageIndex < appState.pages.length) {
+                            appState.currentPageIndex++;
+                            updateUI();
+                        }
+                    }
+                });
+
+                uiElements.prevBtn.addEventListener('click', () => {
+                    if (appState.currentPageIndex > 0) {
+                        appState.currentPageIndex--;
+                        updateUI();
+                    }
+                });
+
+                uiElements.adminBtn.addEventListener('click', () => {
+                    const code = prompt('لطفا کد مدیر را وارد کنید:');
+                    if (code === '212') {
+                        uiElements.exportBtn.classList.remove('hidden');
+                        alert('دسترسی مدیر فعال شد.');
+                    } else { alert('کد وارد شده اشتباه است.'); }
+                });
+
+                uiElements.exportBtn.addEventListener('click', handleExport);
+                uiElements.form.addEventListener('submit', handleSubmit);
+                
+                uiElements.restartBtn.addEventListener('click', () => {
+                    uiElements.successModal.classList.add('opacity-0', 'pointer-events-none');
+                    setTimeout(() => location.reload(), 300);
+                });
+            };
+
+            // تابع برای مدیریت ارسال فرم
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                if (appState.isSubmitting) return;
+
+                appState.isSubmitting = true;
+                const submitButton = e.submitter;
+                submitButton.disabled = true;
+                submitButton.textContent = 'در حال ارسال...';
+
+                const formData = new FormData(uiElements.form);
+                const submission = {};
+                for (const [key, value] of formData.entries()) {
+                    if (document.querySelector(`[name="${key}"][type="checkbox"]`)) {
+                        if (!submission[key]) submission[key] = [];
+                        submission[key].push(value);
+                    } else { submission[key] = value; }
+                }
+                Object.keys(submission).forEach(key => {
+                    if (Array.isArray(submission[key])) submission[key] = submission[key].join(' | ');
+                });
+
+                try {
+                    await addDoc(collection(appState.db, "submissions"), submission);
+                    uiElements.successModal.classList.remove('opacity-0', 'pointer-events-none');
+                    uiElements.successModal.querySelector('div').classList.add('scale-100');
+                } catch (error) {
+                    console.error("Error adding document: ", error);
+                    alert("خطایی در ثبت اطلاعات رخ داد. لطفا دوباره تلاش کنید.");
+                } finally {
+                    appState.isSubmitting = false;
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'ارسال نهایی پاسخ‌ها';
+                }
+            };
+
+            // تابع برای خروجی گرفتن اطلاعات
+            const handleExport = async () => {
+                uiElements.exportBtn.disabled = true;
+                uiElements.exportBtn.textContent = 'در حال آماده‌سازی...';
+                try {
+                    const querySnapshot = await getDocs(collection(appState.db, "submissions"));
+                    const allSubmissions = querySnapshot.docs.map(doc => doc.data());
+
+                    if (allSubmissions.length === 0) {
+                        alert('هنوز هیچ پاسخی برای خروجی گرفتن ثبت نشده است.');
+                        return;
+                    }
+                    
+                    const headers = Array.from(new Set(allSubmissions.flatMap(obj => Object.keys(obj))));
+                    let csvContent = '\uFEFF';
+                    csvContent += headers.join(',') + '\r\n';
+                    allSubmissions.forEach(submission => {
+                        const row = headers.map(header => `"${String(submission[header] || '').replace(/"/g, '""')}"`);
+                        csvContent += row.join(',') + '\r\n';
+                    });
+
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'dogharoon_data.csv';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } catch (error) {
+                    console.error("Error fetching documents for export: ", error);
+                    alert("خطایی در دریافت اطلاعات از پایگاه داده رخ داد.");
+                } finally {
+                    uiElements.exportBtn.disabled = false;
+                    uiElements.exportBtn.textContent = 'دریافت خروجی اکسل (CSV)';
+                }
+            };
+            
+            // --- نقطه شروع اجرای برنامه ---
+            (async () => {
+                if (await initializeFirebase()) {
+                    buildForm();
+                    setupEventListeners();
+                    updateUI();
+                }
+            })();
+        }
+    </script>
+</body>
+</html>
+
